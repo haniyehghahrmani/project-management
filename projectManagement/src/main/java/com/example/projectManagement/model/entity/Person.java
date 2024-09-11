@@ -1,5 +1,6 @@
 package com.example.projectManagement.model.entity;
 
+import com.example.projectManagement.model.entity.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -46,16 +47,15 @@ public class Person {
 //    @NotNull(message = "Should Not Be Null")
     private LocalDate birthdate;
 
-
     @Column(name = "person_age")
     @NotNull(message = "Should Not Be Null")
     private int age ;
 
-//    @Column(name = "person_gender")
-//    @Enumerated(EnumType.ORDINAL)
-////    @NotNull(message = "Should Not Be Null")
-//    private Gender gender;
-//
-//    @OneToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.LAZY)
-//    private User user;
+    @Column(name = "person_gender")
+    @Enumerated(EnumType.ORDINAL)
+//    @NotNull(message = "Should Not Be Null")
+    private Gender gender;
+
+    @OneToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private User user;
 }
