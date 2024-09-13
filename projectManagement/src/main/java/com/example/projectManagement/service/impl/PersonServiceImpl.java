@@ -4,8 +4,8 @@ import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.repository.PersonRepository;
 import com.example.projectManagement.service.PersonService;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -15,7 +15,6 @@ import java.util.Optional;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    @Autowired
     private final PersonRepository repository;
 
     public PersonServiceImpl(PersonRepository repository){
