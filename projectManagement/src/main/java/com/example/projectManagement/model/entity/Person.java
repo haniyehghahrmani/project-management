@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 @Entity(name = "PersonEntity")
 @Table(name = "PersonTbl")
-public class Person {
+public class Person extends Base{
     @Id
     @SequenceGenerator(name = "personSeq", sequenceName = "person_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeq")
