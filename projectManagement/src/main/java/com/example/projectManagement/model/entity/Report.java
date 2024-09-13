@@ -1,5 +1,6 @@
 package com.example.projectManagement.model.entity;
 
+import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 
 @Entity(name = "ReportEntity")
 @Table(name = "ReportTbl")
-public class Report {
+public class Report extends Base{
 
     @Id
     @SequenceGenerator(name = "reportSeq", sequenceName = "report_seq", allocationSize = 1)
@@ -33,5 +34,16 @@ public class Report {
 
     private LocalDate generatedAt;
 
+    @Transient
+    private String faGeneratedAt;
+
     private String content;
+
+    public String getFaGeneratedAt() {
+        return String.valueOf(PersianDate.fromGregorian(generatedAt));
+    }
+
+    public void setFaGeneratedAt(String faGeneratedAt) {
+        this.generatedAt = PersianDate.parse(faGeneratedAt).toGregorian();
+    }
 }
