@@ -25,7 +25,7 @@ public class User extends Base{
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_userName", columnDefinition = "NVARCHAR2(50)")
+    @Column(name = "user_userName", columnDefinition = "NVARCHAR2(50)",unique = true)
     @Pattern(regexp = "^[a-zA-Z1-9\\s]{3,30}$", message = "Invalid userName")
     @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Should Not Be Null")

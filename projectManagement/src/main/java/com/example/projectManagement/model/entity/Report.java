@@ -2,6 +2,7 @@ package com.example.projectManagement.model.entity;
 
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +27,24 @@ public class Report extends Base{
     @Column(name = "report_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Project project;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
     private User author;
 
+    @Column(name = "report_generatedAt")
+    @FutureOrPresent(message = "Invalid Generated Date")
+    @NotNull(message = "Should Not Be Null")
     private LocalDate generatedAt;
 
     @Transient
     private String faGeneratedAt;
 
+    @Column(name = "report_content",  columnDefinition = "NVARCHAR2(200)")
+    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "Invalid Content")
+    @Size(min = 3, max = 200, message = "Content must be between 3 and 200 characters")
+    @NotBlank(message = "Should Not Be Null")
     private String content;
 
     public String getFaGeneratedAt() {

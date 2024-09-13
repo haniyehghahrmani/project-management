@@ -1,6 +1,7 @@
 package com.example.projectManagement.model.entity;
 
 import com.example.projectManagement.model.entity.enums.Gender;
+import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 @Entity(name = "PersonEntity")
 @Table(name = "PersonTbl")
 public class Person extends Base{
+
     @Id
     @SequenceGenerator(name = "personSeq", sequenceName = "person_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeq")
@@ -28,6 +30,8 @@ public class Person extends Base{
 
     @Column(name = "person_name",  columnDefinition = "NVARCHAR2(50)")
     @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Name")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @NotBlank(message = "Should Not Be Null")
     private String name;
 
     @Column(name = "person_lastname", columnDefinition = "NVARCHAR2(50)")
@@ -44,14 +48,25 @@ public class Person extends Base{
 
     @Column(name = "person_birthdate")
     @Past(message = "Invalid Birth Date")
-//    @NotNull(message = "Should Not Be Null")
+    @NotNull(message = "Should Not Be Null")
     private LocalDate birthdate;
+
+    @Transient
+    private String faBirthdate;
 
     @Column(name = "person_gender")
     @Enumerated(EnumType.ORDINAL)
-//    @NotNull(message = "Should Not Be Null")
+    @NotNull(message = "Should Not Be Null")
     private Gender gender;
 
     @OneToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private User user;
+
+    public String getFaBirthDate() {
+        return String.valueOf(PersianDate.fromGregorian(birthdate));
+    }
+
+    public void setFaBirthDate(String faBirthDate) {
+        this.birthdate = PersianDate.parse(faBirthDate).toGregorian();
+    }
 }
