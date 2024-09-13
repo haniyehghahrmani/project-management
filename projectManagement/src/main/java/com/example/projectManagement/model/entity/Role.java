@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity(name = "roleEntity")
 @Table(name = "role_tbl")
-public class Role {
+public class Role extends Base{
 
     @Id
     @SequenceGenerator(name = "roleSeq", sequenceName = "role_seq", allocationSize = 1)

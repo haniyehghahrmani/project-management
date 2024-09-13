@@ -88,5 +88,4 @@ public class Task extends Base{
     public void setFaDueDate(String faDueDate) {
         this.dueDate = PersianDate.parse(faDueDate).toGregorian().atStartOfDay();
     }
-
 }
