@@ -47,10 +47,6 @@ public class Person extends Base{
 //    @NotNull(message = "Should Not Be Null")
     private LocalDate birthdate;
 
-    @Column(name = "person_age")
-    @NotNull(message = "Should Not Be Null")
-    private int age ;
-
     @Column(name = "person_gender")
     @Enumerated(EnumType.ORDINAL)
 //    @NotNull(message = "Should Not Be Null")

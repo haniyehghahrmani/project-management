@@ -31,7 +31,7 @@
 
             <div class="modal-form">
                 <form id="save-form" th:object="${person}">
-                    <div th:replace="~{/fragments/person/person-fragment :: personFormContent('name' ,'lastname'  , 'nationalId' ,'birthdate' ,'age','gender')}"></div>
+                    <div th:replace="~{/fragments/person/person-fragment :: personFormContent('name' ,'lastname'  , 'nationalId' ,'birthdate','gender')}"></div>
                 </form>
             </div>
 
@@ -52,12 +52,9 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Family</th>
-                <th>Fathers Name</th>
-                <th>Certification ID</th>
                 <th>National ID</th>
                 <th>Birthdate</th>
                 <th>Gender</th>
-                <th>Marriage Status</th>
                 <th>Status</th>
                 <th></th>
                 <th></th>
@@ -71,7 +68,6 @@
                 <td th:text="${person.lastname}"></td>
                 <td th:text="${person.nationalId}"></td>
                 <td th:text="${person.birthdate}"></td>
-                <td th:text="${person.age}"></td>
                 <td th:text="${person.gender}"></td>
                 <td>Active</td>
                 <td><a  th:data-name="${person.id}" th:onclick="|findById('/person', this.getAttribute('data-name'))|">
@@ -98,7 +94,7 @@
             <div class="modal-form">
                 <form id="edit-form">
                     <input type="text" id="id" name="id" hidden="hidden">
-                    <div th:replace="~{/fragments/person/person-fragment :: personFormContent('edit-name' ,'edit-lastname' ,  'edit-nationalId' ,'edit-birthdate','edit-age' ,'edit-gender' )}"></div>
+                    <div th:replace="~{/fragments/person/person-fragment :: personFormContent('edit-name' ,'edit-lastname' ,  'edit-nationalId' ,'edit-birthdate' ,'edit-gender' )}"></div>
                 </form>
             </div>
 

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Entity(name = "CommentEntity")
 @Table(name = "CommentTbl")
 public class Comment {
+
     @Id
     @SequenceGenerator(name = "commentSeq", sequenceName = "comment_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentSeq")

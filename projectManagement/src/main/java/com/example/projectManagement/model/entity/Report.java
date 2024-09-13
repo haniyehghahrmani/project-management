@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Entity(name = "ReportEntity")
 @Table(name = "ReportTbl")
 public class Report {
+
     @Id
     @SequenceGenerator(name = "reportSeq", sequenceName = "report_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reportSeq")

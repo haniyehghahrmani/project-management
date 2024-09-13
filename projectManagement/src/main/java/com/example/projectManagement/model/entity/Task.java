@@ -21,6 +21,7 @@ import java.util.List;
 @Entity(name = "TaskEntity")
 @Table(name = "TaskTbl")
 public class Task {
+
     @Id
     @SequenceGenerator(name = "taskSeq", sequenceName = "task_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "taskSeq")

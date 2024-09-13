@@ -37,7 +37,6 @@ public class PersonServiceImpl implements PersonService {
         existingPerson.setLastname(person.getLastname());
         existingPerson.setNationalId(person.getNationalId());
         existingPerson.setBirthdate(person.getBirthdate());
-        existingPerson.setAge(person.getAge());
         existingPerson.setGender(person.getGender());
         existingPerson.setUser(person.getUser());
 
