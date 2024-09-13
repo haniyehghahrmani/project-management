@@ -17,7 +17,8 @@ import java.util.Set;
 
 @Entity(name = "UserEntity")
 @Table(name = "UserTbl")
-public class User {
+public class User extends Base{
+
     @Id
     @SequenceGenerator(name = "userSeq", sequenceName = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
