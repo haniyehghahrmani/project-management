@@ -1,6 +1,5 @@
 package com.example.projectManagement.repository;
 
-import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.model.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,15 +21,15 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
 
     Optional<Task> findTaskByIdAndDeletedFalse(Long id);
 
-    List<Task> findTaskByAssignedToAndDeletedFalse(String username);
-
-    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate);
-
-    List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate);
-
-    List<Task> findTaskByPriorityAndDeletedFalse(String priority);
-
-    List<Task> findTaskByStatusAndDeletedFalse(String status);
+//    List<Task> findTaskByAssignedToAndDeletedFalse(String username);
+//
+//    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate);
+//
+//    List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate);
+//
+//    List<Task> findTaskByPriorityAndDeletedFalse(String priority);
+//
+//    List<Task> findTaskByStatusAndDeletedFalse(String status);
 
     Long countByDeletedFalse();
 }
