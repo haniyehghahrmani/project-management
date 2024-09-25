@@ -4,10 +4,8 @@ import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.repository.PersonRepository;
 import com.example.projectManagement.service.PersonService;
-
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +15,7 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository repository;
 
-    public PersonServiceImpl(PersonRepository repository){
+    public PersonServiceImpl(PersonRepository repository) {
         this.repository = repository;
     }
 
@@ -39,6 +37,7 @@ public class PersonServiceImpl implements PersonService {
         existingPerson.setBirthdate(person.getBirthdate());
         existingPerson.setGender(person.getGender());
         existingPerson.setUser(person.getUser());
+        existingPerson.setEditing(true);
 
         return repository.saveAndFlush(existingPerson);
     }
@@ -47,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         repository.findPersonByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Person Was Found with id " + id  +" To Remove !")
+                () -> new NoContentException("No Active Person Was Found with id " + id + " To Remove !")
         );
         repository.logicalRemove(id);
     }
@@ -63,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No Person Was Found with id : " + id );
+            throw new NoContentException("No Person Was Found with id : " + id);
         }
     }
 
@@ -75,7 +74,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person logicalRemoveWithReturn(Long id) throws NoContentException {
         Person person = repository.findPersonByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Person Was Found with id  " + id  +" To Remove !")
+                () -> new NoContentException("No Active Person Was Found with id  " + id + " To Remove !")
         );
 
         person.setDeleted(true);
@@ -94,13 +93,13 @@ public class PersonServiceImpl implements PersonService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No Active Person Was Found with id : " + id );
+            throw new NoContentException("No Active Person Was Found with id : " + id);
         }
     }
 
     @Override
     public List<Person> findPersonByNameAndLastnameAndDeletedFalse(String name, String lastName) {
-        return repository.findPersonByNameAndLastnameAndDeletedFalse(name , lastName);
+        return repository.findPersonByNameAndLastnameAndDeletedFalse(name, lastName);
     }
 
     @Override
@@ -109,7 +108,7 @@ public class PersonServiceImpl implements PersonService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No Active Person Was Found with National ID : " + nationalId );
+            throw new NoContentException("No Active Person Was Found with National ID : " + nationalId);
         }
     }
 
