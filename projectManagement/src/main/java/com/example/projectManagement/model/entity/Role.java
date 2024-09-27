@@ -33,7 +33,7 @@ public class Role extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String roleName;
 
-    @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY )
+    @ManyToOne(cascade = CascadeType.ALL )
     @JoinColumn(name = "role_user_id")
     private User user;
 }

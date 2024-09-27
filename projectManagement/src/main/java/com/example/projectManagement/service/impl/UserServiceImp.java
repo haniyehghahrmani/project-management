@@ -18,6 +18,7 @@ public class UserServiceImp implements UserService {
     public UserServiceImp(UserRepository repository){
         this.repository = repository;
     }
+
     @Override
     public User save(User user) {
         return repository.save(user);
@@ -25,10 +26,17 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User update(User user) throws NoContentException {
-        repository.findUserByIdAndDeletedFalse(user.getId()).orElseThrow(
-                () -> new NoContentException("No Active User Was Found With ID " +user.getId()+  " To Update !")
+        User existingUser=repository.findById(user.getId()).orElseThrow(
+                () -> new NoContentException("No Active User Was Found with id " + user.getId() + " To Update!")
         );
-        return repository.save(user);
+
+        existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setPerson(user.getPerson());
+        existingUser.setRole(user.getRole());
+        existingUser.setEditing(true);
+
+        return repository.saveAndFlush(existingUser);
     }
 
     @Override
@@ -108,4 +116,5 @@ public class UserServiceImp implements UserService {
     public Long countByDeletedFalse() {
         return repository.countByDeletedFalse();
     }
+
 }

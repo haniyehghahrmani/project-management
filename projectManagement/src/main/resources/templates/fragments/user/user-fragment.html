@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>User Form Fragment</title>
+</head>
+<body>
+<div th:fragment="userFormContent(username ,password) ">
+
+    <label th:for="${username}">Username :</label>
+    <input type="text" th:id="${username}" name="username" placeholder="Username">
+    <!--    <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Username !</span>-->
+    <br>
+    <label th:for="${password}">Password :</label>
+    <input type="text" th:id="${password}" name="password" placeholder="Password">
+    <!--    <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid Password !</span>-->
+    <br>
+</div>
+
+</body>
+</html>

@@ -1,9 +1,9 @@
 package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
-import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.model.entity.User;
 import com.example.projectManagement.service.PersonService;
+import com.example.projectManagement.service.RoleService;
 import com.example.projectManagement.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.EventListener;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,16 +26,20 @@ public class UserController {
 
     private final PersonService personService;
 
-    public UserController(UserService service, PersonService personService) {
+    private final RoleService roleService;
+
+    public UserController(UserService service, PersonService personService, RoleService roleService) {
         this.service = service;
         this.personService = personService;
+        this.roleService = roleService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public String userForm(Model model){
         model.addAttribute("userList",service.findUserByDeletedFalse());
         model.addAttribute("user",new User());
-        List<Person> person=personService.findPersonByDeletedFalse();
+        model.addAttribute("person",personService.findAll());
+        model.addAttribute("role",roleService.findAll());
         return "user";
     }
 

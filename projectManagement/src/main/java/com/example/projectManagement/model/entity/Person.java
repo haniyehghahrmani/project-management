@@ -59,7 +59,7 @@ public class Person extends Base{
     @NotNull(message = "Should Not Be Null")
     private Gender gender;
 
-    @OneToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private User user;
 
     public String getFaBirthDate() {
