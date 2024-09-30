@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
     <title>User</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
           rel="stylesheet">
     <link rel="stylesheet"
@@ -32,22 +31,21 @@
             <div class="modal-form">
                 <form id="save-form" th:object="${user}">
                     <div th:replace="~{/fragments/user/user-fragment :: userFormContent(username ,password) }"></div>
+                    <label th:for="person">Select Person:</label>
+                    <select id="person" th:field="*{person}" name="person" required>
+                        <option value="">Select</option>
+                        <option th:each="p : ${person}" th:value="${p.id}" th:utext="${p.name}"></option>
+                    </select>
+                    <br>
+
+                    <label th:for="role">Select role:</label>
+                    <select id="role" th:field="*{role}" name="role" required>
+                        <option value="">Select</option>
+                        <option th:each="r : ${role}" th:value="${r.id}" th:utext="${r.roleName}"></option>
+                    </select>
+                    <br>
                 </form>
             </div>
-
-            <label th:for="person">Select Person:</label>
-            <select id="person" th:field="*{person}" name="person" required>
-                <option value="">Select</option>
-                <option th:each="p : ${person}" th:value="${p.id}" th:utext="${p.name}"></option>
-            </select>
-            <br>
-
-            <label th:for="role">Select role:</label>
-            <select id="role" th:field="*{role}" name="role" required>
-                <option value="">Select</option>
-                <option th:each="r : ${role}" th:value="${r.id}" th:utext="${r.roleName}"></option>
-            </select>
-            <br>
 
             <div class="modal-footer">
                 <button onclick="save('/user' ,'save-form')">Save</button>
