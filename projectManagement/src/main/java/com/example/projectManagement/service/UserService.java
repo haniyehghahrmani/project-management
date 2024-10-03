@@ -3,6 +3,7 @@ package com.example.projectManagement.service;
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.exception.NoUserException;
 import com.example.projectManagement.model.entity.User;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
