@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User</title>
+    <title>Task</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
           rel="stylesheet">
     <link rel="stylesheet"
@@ -29,26 +29,20 @@
         <div id="save-modal-content" class="modal-body">
 
             <div class="modal-form">
-                <form id="save-form" th:object="${user}">
-                    <div th:replace="~{/fragments/user/user-fragment :: userFormContent(username ,password) }"></div>
-                    <label th:for="person">Select Person:</label>
-                    <select id="person" th:field="*{person}" name="person" required>
-                        <option value="">Select</option>
-                        <option th:each="p : ${person}" th:value="${p.id}" th:utext="${p.name}"></option>
-                    </select>
-                    <br>
+                <form id="save-form" th:object="${task}">
+                    <div th:replace="~{/fragments/task/task-fragment :: taskFormContent(title,description,createDate,dueDate,priority,status)  }"></div>
 
-                    <label th:for="role">Select role:</label>
-                    <select id="role" th:field="*{role}" name="role" required>
+                    <label th:for="user">Select User:</label>
+                    <select id="user" th:field="*{assignedTo}" name="user" required>
                         <option value="">Select</option>
-                        <option th:each="r : ${role}" th:value="${r.id}" th:utext="${r.roleName}"></option>
+                        <option th:each="p : ${user}" th:value="${p.id}" th:utext="${p.username}"></option>
                     </select>
                     <br>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button onclick="save('/user' ,'save-form')">Save</button>
+                <button onclick="save('/task' ,'save-form')">Save</button>
                 <button onclick="closeModal()">Cancel</button>
             </div>
 
@@ -57,33 +51,39 @@
     <!--Save Modal-->
 
     <!--Table-->
-    <div class="table" th:if="${userList.size() > 0}">
+    <div class="table" th:if="${taskList.size() > 0}">
         <table>
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Person</th>
-                <th>Role</th>
+                <th>title</th>
+                <th>description</th>
+                <th>assignedTo</th>
+                <th>createDate</th>
+                <th>dueDate</th>
+                <th>priority</th>
+                <th>status</th>
                 <th></th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="user :${userList}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.password}"></td>
-                <td th:text="${user.person.nationalId}"></td>
-                <td th:text="${user.role}"></td>
+            <tr th:each="task :${taskList}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.title}"></td>
+                <td th:text="${task.description}"></td>
+                <td th:text="${task.assignedTo.username}"></td>
+                <td th:text="${task.createDate}"></td>
+                <td th:text="${task.dueDate}"></td>
+                <td th:text="${task.priority}"></td>
+                <td th:text="${task.status}"></td>
 
-                <td><a th:data-name="${user.id}" th:onclick="|findById('/user', this.getAttribute('data-name'))|">
+                <td><a th:data-name="${task.id}" th:onclick="|findById('/task', this.getAttribute('data-name'))|">
                         <span class="material-symbols-outlined edit">
                             edit
                         </span>
                 </a></td>
-                <td><a th:data-name="${user.id}" th:onclick="|remove('/user', this.getAttribute('data-name'))|">
+                <td><a th:data-name="${task.id}" th:onclick="|remove('/task', this.getAttribute('data-name'))|">
                         <span class="material-symbols-outlined delete">
                             delete
                         </span>
@@ -102,19 +102,12 @@
             <div class="modal-form">
                 <form id="edit-form">
                     <input type="text" id="id" name="id" hidden="hidden">
-                    <div th:replace="~{/fragments/user/user-fragment :: userFormContent(username ,password) }"></div>
+                    <div th:replace="~{/fragments/task/task-fragment :: taskFormContent(title,description,createDate,dueDate,priority,status)  }"></div>
 
-                    <label th:for="person">Select Person:</label>
-                    <select id="edit-person" th:field="*{person}" name="person" required>
+                    <label th:for="user">Select User:</label>
+                    <select id="edit-user" th:field="*{user}" name="user" required>
                         <option value="">Select</option>
-                        <option th:each="p : ${person}" th:value="${p.id}" th:utext="${p.name}"></option>
-                    </select>
-                    <br>
-
-                    <label th:for="role">Select role:</label>
-                    <select id="edit-role" th:field="*{role}" name="role" required>
-                        <option value="">Select</option>
-                        <option th:each="r : ${role}" th:value="${r.id}" th:utext="${r.roleName}"></option>
+                        <option th:each="p : ${user}" th:value="${p.id}" th:utext="${p.username}"></option>
                     </select>
                     <br>
 
@@ -122,7 +115,7 @@
             </div>
 
             <div class="modal-footer">
-                <button onclick="edit('/user' , 'edit-form')">Edit</button>
+                <button onclick="edit('/task' , 'edit-form')">Edit</button>
                 <button onclick="closeModal()">Cancel</button>
             </div>
 
@@ -138,7 +131,7 @@
 <!--Main Container-->
 
 <script src="/js/template.js"></script>
-<script src="/js/user.js"></script>
+<script src="/js/task.js"></script>
 <script src="/js/popup.js"></script>
 
 </body>

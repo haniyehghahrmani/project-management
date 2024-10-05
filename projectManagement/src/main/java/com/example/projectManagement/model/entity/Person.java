@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -59,8 +60,8 @@ public class Person extends Base{
     @NotNull(message = "Should Not Be Null")
     private Gender gender;
 
-    @OneToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private User user;
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "person")
+    private List<User> user;
 
     public String getFaBirthDate() {
         return String.valueOf(PersianDate.fromGregorian(birthdate));

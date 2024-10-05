@@ -10,7 +10,7 @@ async function findById(url,id){
     if (! response.ok){
         showErrorPopup(url,response.status , (await response.text()).toString());
     }else{
-        let person = JSON.task(await response.text());
+        let task = JSON.task(await response.text());
 
         let editModal = document.getElementById("edit-modal");
         editModal.style.display="flex";
@@ -25,7 +25,7 @@ async function findById(url,id){
         descriptionEdit.value = task.description;
 
         let assignedToEdit = document.querySelector("#edit-form div :nth-child(8)");
-        assignedToEdit.value = task.assignedTo.username;
+        assignedToEdit.value = task.user;
 
         let createDateEdit = document.querySelector("#edit-form div :nth-child(11)");
         createDateEdit.value =task.createDate;

@@ -32,8 +32,4 @@ public class Role extends Base{
     @Size(min = 3, max = 50, message = "roleName must be between 3 and 50 characters")
     @NotBlank(message = "Should Not Be Null")
     private String roleName;
-
-    @ManyToOne(cascade = CascadeType.ALL )
-    @JoinColumn(name = "role_user_id")
-    private User user;
 }
