@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +34,7 @@ public class Role extends Base{
     @Size(min = 3, max = 50, message = "roleName must be between 3 and 50 characters")
     @NotBlank(message = "Should Not Be Null")
     private String roleName;
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<User> users;
 }

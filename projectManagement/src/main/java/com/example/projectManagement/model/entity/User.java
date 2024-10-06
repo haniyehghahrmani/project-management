@@ -45,9 +45,6 @@ public class User extends Base {
     @JoinColumn(name = "user_person_id")
     private Person person;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    private Set<Role> role;
-
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private List<Team> teams;
 }
