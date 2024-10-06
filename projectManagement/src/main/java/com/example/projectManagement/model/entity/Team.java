@@ -28,12 +28,12 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
-    @Column(name = "team_teamName", columnDefinition = "NVARCHAR2(50)",unique = true)
+    @Column(name = "team_teamName", columnDefinition = "NVARCHAR2(50)", unique = true)
     @Pattern(regexp = "^[a-zA-Z1-9\\s]{3,30}$", message = "Invalid teamName")
     @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Should Not Be Null")
     private String teamName;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private List<User> teamMembers;
 }
