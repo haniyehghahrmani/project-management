@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,8 +45,8 @@ public class Comment extends Base{
     @Transient
     private String faPostedDate;
 
-    @ManyToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private Task relatedTask;
+    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private List<Task> relatedTask;
 
     public String getFaPostedDate() {
         return String.valueOf(PersianDate.fromGregorian(postedDate));

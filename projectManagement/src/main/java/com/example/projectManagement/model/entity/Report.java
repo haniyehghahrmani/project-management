@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,6 +47,9 @@ public class Report extends Base{
     @Size(min = 3, max = 200, message = "Content must be between 3 and 200 characters")
     @NotBlank(message = "Should Not Be Null")
     private String content;
+
+    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Task> taskList;
 
     public String getFaGeneratedAt() {
         return String.valueOf(PersianDate.fromGregorian(generatedAt));

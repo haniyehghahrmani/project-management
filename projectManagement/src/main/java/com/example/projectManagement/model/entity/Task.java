@@ -43,8 +43,11 @@ public class Task extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String description;
 
-    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private User assignedTo;
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<User> assignedTo;
+
+    @OneToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private List<Phase> phaseList;
 
     @Column(name = "task_createDate")
     @PastOrPresent
