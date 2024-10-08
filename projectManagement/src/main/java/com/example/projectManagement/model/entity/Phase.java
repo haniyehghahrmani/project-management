@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity(name = "PhaseEntity")
 @Table(name = "PhaseTbl")
-public class Phase {
+public class Phase extends Base{
 
     @Id
     @SequenceGenerator(name = "phaseSeq", sequenceName = "phase_seq", allocationSize = 1)
