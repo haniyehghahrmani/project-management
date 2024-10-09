@@ -30,20 +30,20 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String taskForm(Model model){
-        model.addAttribute("taskList",service.findTaskByDeletedFalse());
-        model.addAttribute("task",new Task());
-        model.addAttribute("priority",com.example.projectManagement.model.entity.enums.Priority.values());
+    public String taskForm(Model model) {
+        model.addAttribute("taskList", service.findTaskByDeletedFalse());
+        model.addAttribute("task", new Task());
+        model.addAttribute("priority", com.example.projectManagement.model.entity.enums.Priority.values());
         model.addAttribute("status", com.example.projectManagement.model.entity.enums.Status.values());
-        model.addAttribute("user",userService.findAll());
+        model.addAttribute("user", userService.findAll());
         return "task";
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.POST)
-    public Task save(@Valid Task task, Model model, BindingResult result){
-        if (result.hasErrors()){
+    public Task save(@Valid Task task, Model model, BindingResult result) {
+        if (result.hasErrors()) {
             throw new ValidationException(
                     result
                             .getAllErrors()
@@ -57,22 +57,22 @@ public class TaskController {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public Task remove(Model model, @PathVariable Long id)throws NoContentException{
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Task remove(Model model, @PathVariable Long id) throws NoContentException {
         return service.logicalRemoveWithReturn(id);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Optional<Task> findById(Model model,@PathVariable Long id)throws NoContentException{
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Optional<Task> findById(Model model, @PathVariable Long id) throws NoContentException {
         return service.findTaskByIdAndDeletedFalse(id);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all",method = RequestMethod.GET)
-    public List<Task> findAll(Model model){
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public List<Task> findAll(Model model) {
         return service.findTaskByDeletedFalse();
     }
 }
