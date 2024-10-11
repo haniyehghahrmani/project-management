@@ -18,10 +18,9 @@ import java.util.List;
 @Getter
 @Setter
 
-
 @Entity(name = "roleEntity")
 @Table(name = "role_tbl")
-public class Role extends Base{
+public class Role extends Base {
 
     @Id
     @SequenceGenerator(name = "roleSeq", sequenceName = "role_seq", allocationSize = 1)
@@ -35,8 +34,8 @@ public class Role extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String roleName;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    private List<User> users;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "role")
+    private List<User> user;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(

@@ -41,6 +41,9 @@ public class Attachment {
     @Column(name = "attachment_file_path")
     private String filePath;
 
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private Task task;
+
     @Column(name = "attachment_file_caption", columnDefinition = "NVARCHAR2(50)")
     @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Caption")
     @Size(min = 3, max = 50, message = "Caption must be between 3 and 50 characters")
