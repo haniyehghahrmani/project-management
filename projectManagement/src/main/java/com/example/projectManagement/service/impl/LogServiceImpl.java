@@ -2,6 +2,7 @@ package com.example.projectManagement.service.impl;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Log;
+import com.example.projectManagement.model.entity.enums.LogType;
 import com.example.projectManagement.repository.LogRepository;
 import com.example.projectManagement.service.LogService;
 import org.springframework.stereotype.Service;
@@ -84,10 +85,10 @@ public class LogServiceImpl implements LogService {
         return log;
     }
 
-    @Override
-    public List<Log> findLogByLogTypeAndDeletedFalse(String logType) {
-        return logRepository.findLogByLogTypeAndDeletedFalse(logType);
-    }
+//    @Override
+//    public List<Log> findLogByLogTypeAndDeletedFalse(LogType logType) {
+//        return logRepository.findLogByLogTypeAndDeletedFalse(logType);
+//    }
 
     @Override
     public Long countByDeletedFalse() {

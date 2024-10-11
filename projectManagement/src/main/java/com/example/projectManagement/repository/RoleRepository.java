@@ -23,7 +23,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     List<Role> findRoleByRoleNameAndDeletedFalse(String roleName);
 
-    List<Role> findRoleByUserAndDeletedFalse(User user);
+//    List<Role> findRoleByUserAndDeletedFalse(User user);
 
     Long countByDeletedFalse();
 }

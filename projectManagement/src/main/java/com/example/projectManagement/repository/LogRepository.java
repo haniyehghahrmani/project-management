@@ -1,6 +1,7 @@
 package com.example.projectManagement.repository;
 
 import com.example.projectManagement.model.entity.Log;
+import com.example.projectManagement.model.entity.enums.LogType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
     Optional<Log> findLogByIdAndDeletedFalse(Long id);
 
-    List<Log> findLogByLogTypeAndDeletedFalse(String logType);
+//    List<Log> findLogByLogTypeAndDeletedFalse(LogType logType);
 
     Long countByDeletedFalse();
 }

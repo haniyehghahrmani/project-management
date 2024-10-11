@@ -33,7 +33,7 @@ public class UserServiceImp implements UserService {
         existingUser.setUsername(user.getUsername());
         existingUser.setPassword(user.getPassword());
         existingUser.setPerson(user.getPerson());
-        existingUser.setRole(user.getRole());
+//        existingUser.setRole(user.getRole());
         existingUser.setEditing(true);
 
         return repository.saveAndFlush(existingUser);

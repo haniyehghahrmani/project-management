@@ -19,7 +19,7 @@ import java.util.List;
 
 @Entity(name = "PermissionEntity")
 @Table(name = "PermissionTbl")
-public class Permission {
+public class Permission extends Base{
 
     @Id
     @SequenceGenerator(name = "permissionSeq", sequenceName = "permission_seq", allocationSize = 1)

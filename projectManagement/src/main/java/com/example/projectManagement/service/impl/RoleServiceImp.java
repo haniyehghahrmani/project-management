@@ -32,7 +32,7 @@ public class RoleServiceImp implements RoleService {
                 );
 
         existingRole.setRoleName(role.getRoleName());
-        existingRole.setUser(role.getUser());
+//        existingRole.getUsers().add(role);
         existingRole.setEditing(true);
 
         return repository.saveAndFlush(existingRole);
@@ -96,10 +96,10 @@ public class RoleServiceImp implements RoleService {
         return repository.findRoleByRoleNameAndDeletedFalse(roleName);
     }
 
-    @Override
-    public List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException {
-        return repository.findRoleByUserAndDeletedFalse(user);
-    }
+//    @Override
+//    public List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException {
+//        return repository.findRoleByUserAndDeletedFalse(user);
+//    }
 
     @Override
     public Long countByDeletedFalse() {

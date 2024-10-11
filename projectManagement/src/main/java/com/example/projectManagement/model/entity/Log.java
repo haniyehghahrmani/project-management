@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "LogEntity")
 @Table(name = "LogTbl")
-public class Log {
+public class Log extends Base {
 
     @Id
     @SequenceGenerator(name = "logSeq", sequenceName = "log_seq", allocationSize = 1)

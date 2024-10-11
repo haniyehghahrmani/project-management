@@ -2,6 +2,7 @@ package com.example.projectManagement.service;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Log;
+import com.example.projectManagement.model.entity.enums.LogType;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface LogService {
 
     Optional<Log> findLogByIdAndDeletedFalse(Long id) throws NoContentException;
 
-    List<Log> findLogByLogTypeAndDeletedFalse(String logType);
+//    List<Log> findLogByLogTypeAndDeletedFalse(LogType logType);
 
     Long countByDeletedFalse();
 

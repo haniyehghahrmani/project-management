@@ -31,7 +31,7 @@ public interface RoleService {
 
     List<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException;
 
-    List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException;
+//    List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException;
 
     Long countByDeletedFalse();
 }
