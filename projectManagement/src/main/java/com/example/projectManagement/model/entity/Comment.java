@@ -34,8 +34,8 @@ public class Comment extends Base{
     @NotBlank(message = "Content Should Not Be Null")
     private String content;
 
-    @OneToOne(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private User author;
+    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private List<User> author;
 
     @Column(name = "comment_postedDate")
     @Past(message = "Invalid Posted Date")
