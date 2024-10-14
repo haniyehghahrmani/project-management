@@ -60,8 +60,8 @@ public class Person extends Base{
     @NotNull(message = "Should Not Be Null")
     private Gender gender;
 
-    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "person")
-    private List<User> user;
+//    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "person")
+//    private List<User> user;
 
     public String getFaBirthDate() {
         return String.valueOf(PersianDate.fromGregorian(birthdate));
