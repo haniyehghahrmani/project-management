@@ -1,6 +1,6 @@
 package com.example.projectManagement.model.entity;
 
-import com.example.projectManagement.model.entity.enums.Gender;
+import com.example.projectManagement.model.enums.Gender;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -11,7 +11,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

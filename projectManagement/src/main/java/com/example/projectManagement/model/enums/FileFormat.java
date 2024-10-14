@@ -1,4 +1,4 @@
-package com.example.projectManagement.model.entity.enums;
+package com.example.projectManagement.model.enums;
 
 public enum FileFormat {
     pdf,

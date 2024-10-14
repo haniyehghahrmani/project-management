@@ -2,6 +2,8 @@ package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Task;
+import com.example.projectManagement.model.enums.Priority;
+import com.example.projectManagement.model.enums.Status;
 import com.example.projectManagement.service.TaskService;
 import com.example.projectManagement.service.UserService;
 import jakarta.validation.Valid;
@@ -33,8 +35,8 @@ public class TaskController {
     public String taskForm(Model model) {
         model.addAttribute("taskList", service.findTaskByDeletedFalse());
         model.addAttribute("task", new Task());
-        model.addAttribute("priority", com.example.projectManagement.model.entity.enums.Priority.values());
-        model.addAttribute("status", com.example.projectManagement.model.entity.enums.Status.values());
+        model.addAttribute("priority", Priority.values());
+        model.addAttribute("status", Status.values());
         model.addAttribute("user", userService.findAll());
         return "task";
     }

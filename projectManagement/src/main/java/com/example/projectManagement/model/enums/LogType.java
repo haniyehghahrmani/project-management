@@ -1,14 +1,16 @@
-package com.example.projectManagement.model.entity.enums;
+package com.example.projectManagement.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Gender {
+public enum LogType {
 
-    MALE("Male", "مرد"),
-    FEMALE("Female", "زن");
+    INFO("Information", "اطلاعات"),
+    ERROR("Error", "خطا"),
+    DEBUG("Debug", "رفع اشکال‌"),
+    OPERATION("Operation", "عملیات");
 
     private final String english;
     private final String persian;

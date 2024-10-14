@@ -1,15 +1,14 @@
-package com.example.projectManagement.model.entity.enums;
+package com.example.projectManagement.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Priority {
+public enum Gender {
 
-    HighPriority("High Priority", "اولویت بالا"),
-    MediumPriority("Medium Priority", "اولویت متوسط"),
-    LowPriority("Low Priority", "اولویت پایین");
+    MALE("Male", "مرد"),
+    FEMALE("Female", "زن");
 
     private final String english;
     private final String persian;

@@ -1,6 +1,6 @@
 package com.example.projectManagement.model.entity;
 
-import com.example.projectManagement.model.entity.enums.FileFormat;
+import com.example.projectManagement.model.enums.FileFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

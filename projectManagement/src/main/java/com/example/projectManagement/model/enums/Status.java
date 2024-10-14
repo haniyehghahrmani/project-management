@@ -1,16 +1,15 @@
-package com.example.projectManagement.model.entity.enums;
+package com.example.projectManagement.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum LogType {
+public enum Status {
 
-    INFO("Information", "اطلاعات"),
-    ERROR("Error", "خطا"),
-    DEBUG("Debug", "رفع اشکال‌"),
-    OPERATION("Operation", "عملیات");
+    InProgress("In Progress", "در حال انجام"),
+    Completed("Completed", "تکمیل شده"),
+    Canceled("Canceled", "لغو شده");
 
     private final String english;
     private final String persian;

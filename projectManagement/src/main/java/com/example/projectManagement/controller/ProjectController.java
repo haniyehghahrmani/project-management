@@ -2,7 +2,7 @@ package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Project;
-import com.example.projectManagement.model.entity.enums.Status;
+import com.example.projectManagement.model.enums.Status;
 import com.example.projectManagement.service.ProjectService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;

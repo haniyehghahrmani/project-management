@@ -1,6 +1,6 @@
 package com.example.projectManagement.model.entity;
 
-import com.example.projectManagement.model.entity.enums.Status;
+import com.example.projectManagement.model.enums.Status;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

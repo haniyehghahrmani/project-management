@@ -2,6 +2,7 @@ package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Person;
+import com.example.projectManagement.model.enums.Gender;
 import com.example.projectManagement.service.PersonService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -29,7 +30,7 @@ public class PersonController {
     public String personForm(Model model) {
         model.addAttribute("personList", service.findPersonByDeletedFalse());
         model.addAttribute("person", new Person());
-        model.addAttribute("genders", com.example.projectManagement.model.entity.enums.Gender.values());
+        model.addAttribute("genders", Gender.values());
         return "person";
     }
 

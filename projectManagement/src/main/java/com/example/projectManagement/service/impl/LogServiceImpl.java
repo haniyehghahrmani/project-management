@@ -2,7 +2,6 @@ package com.example.projectManagement.service.impl;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Log;
-import com.example.projectManagement.model.entity.enums.LogType;
 import com.example.projectManagement.repository.LogRepository;
 import com.example.projectManagement.service.LogService;
 import org.springframework.stereotype.Service;

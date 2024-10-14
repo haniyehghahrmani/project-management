@@ -1,15 +1,15 @@
-package com.example.projectManagement.model.entity.enums;
+package com.example.projectManagement.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum Status {
+public enum Priority {
 
-    InProgress("In Progress", "در حال انجام"),
-    Completed("Completed", "تکمیل شده"),
-    Canceled("Canceled", "لغو شده");
+    HighPriority("High Priority", "اولویت بالا"),
+    MediumPriority("Medium Priority", "اولویت متوسط"),
+    LowPriority("Low Priority", "اولویت پایین");
 
     private final String english;
     private final String persian;

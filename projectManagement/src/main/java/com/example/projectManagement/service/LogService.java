@@ -2,7 +2,6 @@ package com.example.projectManagement.service;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Log;
-import com.example.projectManagement.model.entity.enums.LogType;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
