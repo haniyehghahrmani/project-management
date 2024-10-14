@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -75,6 +76,20 @@ public class Task extends Base{
 
     @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Task> subTasks;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "phase_id")
+    private Phase phase;
+
+    //TODO: Check This Method.
+    public void addSubTask(Task task){
+        if(subTasks == null){
+            subTasks = new ArrayList<>();
+
+        }
+        subTasks.add(task);
+
+    }
 
     public String getFaCreateDate() {
         return String.valueOf(PersianDate.fromGregorian(LocalDate.from(createDate)));
