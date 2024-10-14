@@ -34,6 +34,10 @@ public class Phase extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String phaseName;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    private List<Project> projectList;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    public List<Task> taskList;
 }
