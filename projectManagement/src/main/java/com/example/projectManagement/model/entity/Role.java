@@ -34,8 +34,8 @@ public class Role extends Base {
     @NotBlank(message = "Should Not Be Null")
     private String roleName;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "role")
-    private List<User> user;
+//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "role")
+//    private List<User> user;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
