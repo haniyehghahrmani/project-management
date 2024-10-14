@@ -25,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person update(Person person) throws NoContentException {
+    public Person update(@Valid Person person) throws NoContentException {
         Person existingPerson = repository.findById(person.getId())
                 .orElseThrow(
                         () -> new NoContentException("No Active Person Was Found with id " + person.getId() + " To Update!")
@@ -36,7 +36,6 @@ public class PersonServiceImpl implements PersonService {
         existingPerson.setNationalId(person.getNationalId());
         existingPerson.setBirthdate(person.getBirthdate());
         existingPerson.setGender(person.getGender());
-        existingPerson.setUser(person.getUser());
         existingPerson.setEditing(true);
 
         return repository.saveAndFlush(existingPerson);

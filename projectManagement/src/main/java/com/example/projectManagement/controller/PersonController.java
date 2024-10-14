@@ -6,6 +6,7 @@ import com.example.projectManagement.model.enums.Gender;
 import com.example.projectManagement.service.PersonService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/person")
@@ -37,14 +37,14 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Person save(Model model, @Valid Person person, BindingResult result) {
+    public Person save(@Valid Person person, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
                             .getAllErrors()
                             .stream()
-                            .map((event) -> event.getDefaultMessage())
-                            .collect(Collectors.toList()).toString()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
             );
         }
         return service.save(person);
@@ -52,14 +52,14 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public Person edit(Model model, @Valid Person person, BindingResult result) throws NoContentException {
+    public Person edit(@Valid Person person, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
                             .getAllErrors()
                             .stream()
-                            .map((event) -> event.getDefaultMessage())
-                            .collect(Collectors.toList()).toString()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
             );
         }
         return service.update(person);
@@ -68,21 +68,35 @@ public class PersonController {
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Person remove(Model model, @PathVariable Long id) throws NoContentException {
+    public Person remove(@PathVariable Long id) throws NoContentException {
         return service.logicalRemoveWithReturn(id);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Optional<Person> findById(Model model, @PathVariable Long id) throws NoContentException {
+    public Optional<Person> findById(@PathVariable Long id) throws NoContentException {
         return service.findPersonByIdAndDeletedFalse(id);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Person> findAll(Model model) {
+    public List<Person> findAll() {
         return service.findPersonByDeletedFalse();
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/findByNameAndLastname")
+    public List<Person> findByNameAndLastname(@RequestParam String name, @RequestParam String lastname) {
+        return service.findPersonByNameAndLastnameAndDeletedFalse(name, lastname);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/findByNationalID")
+    public Optional<Person> findByNationalID(@RequestParam String nationalID) throws NoContentException {
+        return service.findPersonByNationalIDAndDeletedFalse(nationalID);
     }
 }
