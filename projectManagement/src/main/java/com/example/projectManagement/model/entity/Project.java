@@ -62,11 +62,11 @@ public class Project extends Base{
     @NotNull(message = "Status Should Not Be Null")
     private Status status;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    public List<User> teamMembers;
+//    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+//    public List<User> teamMembers;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    public List<Task> tasks;
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    public List<Phase> phaseList;
 
     public String getFaStartDate() {
         return String.valueOf(PersianDate.fromGregorian(startDate));
