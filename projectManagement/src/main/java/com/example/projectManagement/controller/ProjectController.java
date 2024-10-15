@@ -20,69 +20,67 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/project")
 public class ProjectController {
-    private final ProjectService service;
 
-    public ProjectController(ProjectService service) {
-        this.service = service;
+    private final ProjectService projectService;
+
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String projectForm(Model model) {
-        model.addAttribute("projectList", service.findProjectByDeletedFalse());
+        model.addAttribute("projectList", projectService.findProjectByDeletedFalse());
         model.addAttribute("project", new Project());
-        model.addAttribute("statusList", Arrays.stream(Status.values()).toList().stream().map(Status::getPersian));
+        model.addAttribute("statusList", Arrays.stream(Status.values()).map(Status::getPersian).toList());
         return "project";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Project save(@Valid Project project, BindingResult result) {
+    public Project save(@Valid @ModelAttribute Project project, BindingResult result) {
         if (result.hasErrors()) {
-            throw new ValidationException(
-                    result
-                            .getAllErrors()
-                            .stream()
-                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                            .toList().toString()
-            );
+            String errorMessages = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList().toString();
+            throw new ValidationException(errorMessages);
         }
-        return service.save(project);
+        return projectService.save(project);
     }
 
+    @PutMapping
     @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT)
-    public Project edit(@Valid Project project, BindingResult result) throws NoContentException {
+    @ResponseStatus(HttpStatus.OK)
+    public Project edit(@Valid @ModelAttribute Project project, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
-            throw new ValidationException(
-                    result
-                            .getAllErrors()
-                            .stream()
-                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                            .toList().toString()
-            );
+            String errorMessages = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList().toString();
+            throw new ValidationException(errorMessages);
         }
-        return service.update(project);
+        return projectService.update(project);
     }
 
+    @DeleteMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Project remove( @PathVariable Long id) throws NoContentException {
-        return service.logicalRemoveWithReturn(id);
+    public Project remove(@PathVariable Long id) throws NoContentException {
+        return projectService.logicalRemoveWithReturn(id);
     }
 
+    @GetMapping("/{id}")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public Optional<Project> findById(@PathVariable Long id) throws NoContentException {
-        return service.findProjectByIdAndDeletedFalse(id);
+        return projectService.findProjectByIdAndDeletedFalse(id);
     }
 
+    @GetMapping("/all")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public List<Project> findAll() {
-        return service.findProjectByDeletedFalse();
+        return projectService.findProjectByDeletedFalse();
     }
 }
