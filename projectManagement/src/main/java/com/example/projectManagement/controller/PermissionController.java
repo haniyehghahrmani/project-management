@@ -16,8 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/permission")
+@RequestMapping("/permissions")
 public class PermissionController {
+
     private final PermissionService service;
 
     public PermissionController(PermissionService service) {
@@ -33,8 +34,8 @@ public class PermissionController {
 
     @PostMapping
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Permission save(@Valid Permission permission, BindingResult result) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Permission save(@Valid @RequestBody Permission permission, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -47,10 +48,10 @@ public class PermissionController {
         return service.save(permission);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Permission edit(@Valid Permission permission, BindingResult result) throws NoContentException {
+    @ResponseStatus(HttpStatus.OK)
+    public Permission edit(@PathVariable Long id, @Valid @RequestBody Permission permission, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -60,26 +61,27 @@ public class PermissionController {
                             .toList().toString()
             );
         }
+        permission.setId(id);
         return service.update(permission);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Permission remove(@PathVariable Long id) {
-        return service.delete(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remove(@PathVariable Long id) throws NoContentException {
+        service.delete(id);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public Optional<Permission> findById(@PathVariable Long id) throws NoContentException {
         return service.findById(id);
     }
 
     @GetMapping("/all")
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public List<Permission> findAll() {
         return service.findAll();
     }

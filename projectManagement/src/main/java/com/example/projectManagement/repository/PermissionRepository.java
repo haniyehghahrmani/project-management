@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
 
     @Modifying
-//    @Query("update PermissionEntity p set p.deleted=true where p.id=:id")
-//    void logicalRemove(Long id);
+    @Query("update PermissionEntity p set p.deleted=true where p.id=:id")
+    void logicalRemove(Long id);
 
     List<Permission> findPermissionByDeletedFalse();
 
