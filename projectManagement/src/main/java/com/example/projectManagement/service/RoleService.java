@@ -2,7 +2,6 @@ package com.example.projectManagement.service;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Role;
-import com.example.projectManagement.model.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,8 +29,6 @@ public interface RoleService {
     Optional<Role> findRoleByIdAndDeletedFalse(Long id) throws NoContentException;
 
     List<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException;
-
-//    List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException;
 
     Long countByDeletedFalse();
 }
