@@ -22,6 +22,7 @@ public interface PhaseService {
 
     Long getPhaseCount();
 
+    @Transactional
     Phase logicalRemoveWithReturn(Long id) throws NoContentException;
 
     List<Phase> findPhaseByDeletedFalse();
