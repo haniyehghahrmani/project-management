@@ -94,4 +94,11 @@ public class UserController {
     public List<User> findAll(Model model){
         return service.findUserByDeletedFalse();
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "/{username}",method = RequestMethod.GET)
+    public Optional<User> findByUsername(@PathVariable String username)throws NoContentException{
+        return service.findUserByUsernameAndDeletedFalse(username);
+    }
 }

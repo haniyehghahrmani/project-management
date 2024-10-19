@@ -83,6 +83,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List<User> finUserByPersonAndDeletedFalse(Long personId) {
+        return repository.finUserByPersonAndDeletedFalse(personId);
+    }
+
+    @Override
     public Optional<User> findUserByIdAndDeletedFalse(Long id) throws NoContentException {
         Optional<User> optional = repository.findUserByIdAndDeletedFalse(id);
         if (optional.isPresent()) {
@@ -105,6 +110,16 @@ public class UserServiceImp implements UserService {
     public boolean existsUserByUsernameAndDeletedFalse(String username) throws NoUserException {
         if (repository.existsUserByUsernameAndDeletedFalse(username)){
             return existsUserByUsernameAndDeletedFalse(username);
+
+        }else {
+            throw new NoUserException("No User Was Found !");
+        }
+    }
+
+    @Override
+    public boolean existsUserByUsernameAndPasswordAndDeletedIsFalse(String username, String password) throws NoUserException{
+        if (repository.existsUserByUsernameAndPasswordAndDeletedIsFalse(username,password)){
+            return existsUserByUsernameAndPasswordAndDeletedIsFalse(username,password);
 
         }else {
             throw new NoUserException("No User Was Found !");

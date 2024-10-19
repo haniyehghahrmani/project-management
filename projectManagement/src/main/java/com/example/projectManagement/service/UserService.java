@@ -28,11 +28,15 @@ public interface UserService {
 
     List<User> findUserByDeletedFalse();
 
+    List<User> finUserByPersonAndDeletedFalse(Long personId);
+
     Optional<User> findUserByIdAndDeletedFalse(Long id) throws NoContentException;
 
     Optional<User> findUserByUsernameAndDeletedFalse(String username ) throws NoContentException;
 
     boolean existsUserByUsernameAndDeletedFalse(String username) throws NoUserException;
+
+    boolean existsUserByUsernameAndPasswordAndDeletedIsFalse(String username,String password) throws NoUserException;
 
     Long countByDeletedFalse();
 }
