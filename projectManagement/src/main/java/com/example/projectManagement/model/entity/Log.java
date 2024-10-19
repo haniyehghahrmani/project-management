@@ -39,7 +39,7 @@ public class Log extends Base {
     @Enumerated(EnumType.STRING)
     @Column(name = "log_type", columnDefinition = "NVARCHAR2(50)")
     @NotNull(message = "Log type should not be null")
-    private LogType type;
+    private LogType logType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

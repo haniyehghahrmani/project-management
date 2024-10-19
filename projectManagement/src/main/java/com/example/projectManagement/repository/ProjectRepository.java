@@ -5,15 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
-public interface ProjectRepository extends JpaRepository<Project,Long>{
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Modifying
+    @Transactional
     @Query("update ProjectEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
 

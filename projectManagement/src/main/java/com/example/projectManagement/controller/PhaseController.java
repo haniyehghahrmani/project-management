@@ -20,18 +20,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/phase")
 public class PhaseController {
 
-    private final PhaseService service;
-
+    private final PhaseService phaseService;
     private final ProjectService projectService;
 
-    public PhaseController(PhaseService service, ProjectService projectService) {
-        this.service = service;
+    public PhaseController(PhaseService phaseService, ProjectService projectService) {
+        this.phaseService = phaseService;
         this.projectService = projectService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String phaseForm(Model model) {
-        model.addAttribute("phaseList", service.findPhaseByDeletedFalse());
+        model.addAttribute("phaseList", phaseService.findPhaseByDeletedFalse());
         model.addAttribute("phase", new Phase());
         model.addAttribute("project", projectService.findAll());
         return "phase";
@@ -39,38 +38,36 @@ public class PhaseController {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(method = RequestMethod.POST)
-    public Phase save(@Valid Phase phase, Model model, BindingResult result) {
+    @PostMapping
+    public Phase save(@Valid @ModelAttribute Phase phase, BindingResult result) {
         if (result.hasErrors()) {
-            throw new ValidationException(
-                    result
-                            .getAllErrors()
-                            .stream()
-                            .map((event) -> event.getDefaultMessage())
-                            .collect(Collectors.toList()).toString()
-            );
+            String errorMessages = result.getAllErrors()
+                    .stream()
+                    .map(event -> event.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            throw new ValidationException(errorMessages);
         }
-        return service.save(phase);
+        return phaseService.save(phase);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Phase remove(Model model, @PathVariable Long id) throws NoContentException {
-        return service.logicalRemoveWithReturn(id);
+    @DeleteMapping("/{id}")
+    public Phase remove(@PathVariable Long id) throws NoContentException {
+        return phaseService.logicalRemoveWithReturn(id);
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Optional<Phase> findById(Model model, @PathVariable Long id) throws NoContentException {
-        return service.findPhaseByIdAndDeletedFalse(id);
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public Optional<Phase> findById(@PathVariable Long id) throws NoContentException {
+        return phaseService.findPhaseByIdAndDeletedFalse(id);
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Phase> findAll(Model model) {
-        return service.findPhaseByDeletedFalse();
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all")
+    public List<Phase> findAll() {
+        return phaseService.findPhaseByDeletedFalse();
     }
 }

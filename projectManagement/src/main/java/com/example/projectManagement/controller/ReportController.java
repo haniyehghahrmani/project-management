@@ -1,8 +1,8 @@
 package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
-import com.example.projectManagement.model.entity.Permission;
-import com.example.projectManagement.service.PermissionService;
+import com.example.projectManagement.model.entity.Report;
+import com.example.projectManagement.service.ReportService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -16,26 +16,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/permissions")
-public class PermissionController {
+@RequestMapping("/report")
+public class ReportController {
+    private final ReportService reportService;
 
-    private final PermissionService service;
-
-    public PermissionController(PermissionService service) {
-        this.service = service;
+    public ReportController(ReportService reportService) {
+        this.reportService = reportService;
     }
 
     @GetMapping
-    public String permissionForm(Model model) {
-        model.addAttribute("permissionList", service.findAll());
-        model.addAttribute("permission", new Permission());
-        return "permission";
+    public String reportForm(Model model) {
+        model.addAttribute("reportList", reportService.findAll());
+        model.addAttribute("report", new Report());
+        return "report";
     }
 
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Permission save(@Valid @RequestBody Permission permission, BindingResult result) {
+    public Report save(@Valid @RequestBody Report report, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -45,13 +44,13 @@ public class PermissionController {
                             .toList().toString()
             );
         }
-        return service.save(permission);
+        return reportService.save(report);
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public Permission edit(@PathVariable Long id, @Valid @RequestBody Permission permission, BindingResult result) throws NoContentException {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Report edit(@PathVariable Long id, @Valid @RequestBody Report report, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -61,28 +60,28 @@ public class PermissionController {
                             .toList().toString()
             );
         }
-        permission.setId(id);
-        return service.update(permission);
+        report.setId(id); // Set the ID to ensure the correct report is updated
+        return reportService.update(report);
     }
 
     @DeleteMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable Long id) throws NoContentException {
-        service.delete(id);
+        reportService.logicalRemove(id);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Permission> findById(@PathVariable Long id) throws NoContentException {
-        return service.findById(id);
+    public Optional<Report> findById(@PathVariable Long id) throws NoContentException {
+        return reportService.findById(id);
     }
 
     @GetMapping("/all")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public List<Permission> findAll() {
-        return service.findAll();
+    public List<Report> findAll() {
+        return reportService.findAll();
     }
 }

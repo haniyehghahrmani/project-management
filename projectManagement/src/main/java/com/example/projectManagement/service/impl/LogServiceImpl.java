@@ -2,6 +2,7 @@ package com.example.projectManagement.service.impl;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Log;
+import com.example.projectManagement.model.enums.LogType;
 import com.example.projectManagement.repository.LogRepository;
 import com.example.projectManagement.service.LogService;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class LogServiceImpl implements LogService {
         if (!logRepository.existsById(id)) {
             throw new NoContentException("Log with id " + id + " not found.");
         }
-//        logRepository.logicalRemove(id);
+        logRepository.logicalRemove(id);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class LogServiceImpl implements LogService {
         if (!logRepository.existsById(id)) {
             throw new NoContentException("Log with id " + id + " not found.");
         }
-//        logRepository.logicalRemove(id);
+        logRepository.logicalRemove(id);
         return logRepository.findById(id).orElseThrow(() -> new NoContentException("Log with id " + id + " not found."));
     }
 
@@ -84,10 +85,10 @@ public class LogServiceImpl implements LogService {
         return log;
     }
 
-//    @Override
-//    public List<Log> findLogByLogTypeAndDeletedFalse(LogType logType) {
-//        return logRepository.findLogByLogTypeAndDeletedFalse(logType);
-//    }
+    @Override
+    public List<Log> findLogByLogTypeAndDeletedFalse(LogType logType) {
+        return logRepository.findLogByLogTypeAndDeletedFalse(logType);
+    }
 
     @Override
     public Long countByDeletedFalse() {
@@ -97,8 +98,12 @@ public class LogServiceImpl implements LogService {
     @Override
     @Transactional
     public Log delete(Long id) throws NoContentException {
-        Log log = logRepository.findById(id).orElseThrow(() -> new NoContentException("Log with id " + id + " not found."));
-        logRepository.delete(log);
-        return log;
+        logicalRemove(id);
+        return logRepository.findLogByIdAndDeletedFalse(id).orElseThrow(() -> new NoContentException("Log with id " + id + " not found."));
+    }
+
+    @Override
+    public Long deleteById(Long id) {
+        return null;
     }
 }

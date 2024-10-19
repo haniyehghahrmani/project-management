@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,9 +33,7 @@ public class LogController {
     }
 
     @PostMapping
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Log save(@Valid Log log, BindingResult result) {
+    public ResponseEntity<Log> save(@Valid Log log, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -44,13 +43,12 @@ public class LogController {
                             .toList().toString()
             );
         }
-        return service.save(log);
+        Log savedLog = service.save(log);
+        return new ResponseEntity<>(savedLog, HttpStatus.CREATED);
     }
 
     @PutMapping
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Log edit(@Valid Log log, BindingResult result) throws NoContentException {
+    public ResponseEntity<Log> edit(@Valid Log log, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -60,27 +58,35 @@ public class LogController {
                             .toList().toString()
             );
         }
-        return service.update(log);
+        Log updatedLog = service.update(log);
+        return new ResponseEntity<>(updatedLog, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Log remove(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<Void> remove(@PathVariable Long id) throws NoContentException {
+        Optional<Log> logOptional = service.findById(id);
+        if (logOptional.isEmpty()) {
+            throw new NoContentException("Log with id " + id + " not found.");
+        }
+        service.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Optional<Log> findById(@PathVariable Long id) throws NoContentException {
-        return service.findById(id);
+    public ResponseEntity<Log> findById(@PathVariable Long id) throws NoContentException {
+        Optional<Log> log = service.findById(id);
+        if (log.isEmpty()) {
+            throw new NoContentException("Log with id " + id + " not found.");
+        }
+        return new ResponseEntity<>(log.get(), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<Log> findAll() {
-        return service.findAll();
+    public ResponseEntity<List<Log>> findAll() {
+        List<Log> logs = service.findAll();
+        if (logs.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(logs, HttpStatus.OK);
     }
 }

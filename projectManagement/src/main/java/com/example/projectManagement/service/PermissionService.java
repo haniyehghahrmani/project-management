@@ -22,6 +22,7 @@ public interface PermissionService {
 
     Long getPermissionsCount();
 
+    @Transactional
     Permission logicalRemoveWithReturn(Long id) throws NoContentException;
 
     List<Permission> findPermissionByDeletedFalse();
@@ -32,5 +33,5 @@ public interface PermissionService {
 
     Long countByDeletedFalse();
 
-    Permission delete(Long id);
+    Permission delete(Long id) throws NoContentException;
 }

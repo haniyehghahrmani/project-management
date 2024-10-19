@@ -38,7 +38,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (!permissionRepository.existsById(id)) {
             throw new NoContentException("Permission with id " + id + " not found.");
         }
-//        permissionRepository.logicalRemove(id);
+        permissionRepository.logicalRemove(id);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (!permissionRepository.existsById(id)) {
             throw new NoContentException("Permission with id " + id + " not found.");
         }
-//        permissionRepository.logicalRemove(id);
+        permissionRepository.logicalRemove(id);
         return permissionRepository.findById(id).orElseThrow(() -> new NoContentException("Permission with id " + id + " not found."));
     }
 
@@ -95,7 +95,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public Permission delete(Long id) {
-        return null;
+    public Permission delete(Long id) throws NoContentException {
+        Permission permission = findById(id).orElseThrow(() -> new NoContentException("Permission with id " + id + " not found."));
+        permissionRepository.delete(permission);
+        return permission;
     }
 }

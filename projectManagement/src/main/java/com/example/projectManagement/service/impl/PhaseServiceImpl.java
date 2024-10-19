@@ -5,11 +5,13 @@ import com.example.projectManagement.model.entity.Phase;
 import com.example.projectManagement.repository.PhaseRepository;
 import com.example.projectManagement.service.PhaseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository repository;
@@ -26,23 +28,22 @@ public class PhaseServiceImpl implements PhaseService {
     @Override
     public Phase update(Phase phase) throws NoContentException {
         Phase existingPhase = repository.findById(phase.getId())
-                .orElseThrow(
-                        () -> new NoContentException("No Active Phase Was Found with id " + phase.getId() + " To Update!")
-                );
+                .orElseThrow(() -> new NoContentException("No Active Phase Was Found with id " + phase.getId() + " To Update!"));
 
         existingPhase.setPhaseName(phase.getPhaseName());
-        existingPhase.setProjectList(phase.getProjectList());
-        existingPhase.setEditing(true);
+        existingPhase.setProject(phase.getProject());
+        existingPhase.setTaskList(phase.getTaskList());
 
         return repository.saveAndFlush(existingPhase);
     }
 
     @Override
     public void logicalRemove(Long id) throws NoContentException {
-        repository.findPhaseByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Phase Was Found with id " + id + " To Remove !")
-        );
-        repository.logicalRemove(id);
+        Phase phase = repository.findPhaseByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new NoContentException("No Active Phase Was Found with id " + id + " To Remove!"));
+
+        phase.setDeleted(true);
+        repository.save(phase);
     }
 
     @Override
@@ -52,12 +53,8 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public Optional<Phase> findById(Long id) throws NoContentException {
-        Optional<Phase> optional = repository.findById(id);
-        if (optional.isPresent()) {
-            return optional;
-        } else {
-            throw new NoContentException("No Phase Was Found with id : " + id);
-        }
+        return Optional.ofNullable(repository.findById(id)
+                .orElseThrow(() -> new NoContentException("No Phase Was Found with id: " + id)));
     }
 
     @Override
@@ -67,9 +64,8 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public Phase logicalRemoveWithReturn(Long id) throws NoContentException {
-        Phase phase = repository.findPhaseByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Phase Was Found with id  " + id + " To Remove !")
-        );
+        Phase phase = repository.findPhaseByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new NoContentException("No Active Phase Was Found with id " + id + " To Remove!"));
 
         phase.setDeleted(true);
         return repository.save(phase);
@@ -82,12 +78,8 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public Optional<Phase> findPhaseByIdAndDeletedFalse(Long id) throws NoContentException {
-        Optional<Phase> optional = repository.findPhaseByIdAndDeletedFalse(id);
-        if (optional.isPresent()) {
-            return optional;
-        } else {
-            throw new NoContentException("No Active Phase Was Found with id : " + id);
-        }
+        return Optional.ofNullable(repository.findPhaseByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new NoContentException("No Active Phase Was Found with id: " + id)));
     }
 
     @Override
@@ -99,5 +91,4 @@ public class PhaseServiceImpl implements PhaseService {
     public Long countByDeletedFalse() {
         return repository.countByDeletedFalse();
     }
-
 }

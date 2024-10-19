@@ -2,7 +2,6 @@ package com.example.projectManagement.service.impl;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Role;
-import com.example.projectManagement.model.entity.User;
 import com.example.projectManagement.repository.RoleRepository;
 import com.example.projectManagement.service.RoleService;
 import org.springframework.stereotype.Service;
@@ -27,12 +26,9 @@ public class RoleServiceImp implements RoleService {
     @Override
     public Role update(Role role) throws NoContentException {
         Role existingRole = repository.findById(role.getId())
-                .orElseThrow(
-                        () -> new NoContentException("No Active Role Was Found with id " + role.getId() + " To Update!")
-                );
+                .orElseThrow(() -> new NoContentException("No Active Role Was Found with id " + role.getId() + " To Update!"));
 
         existingRole.setRoleName(role.getRoleName());
-//        existingRole.getUsers().add(role);
         existingRole.setEditing(true);
 
         return repository.saveAndFlush(existingRole);
@@ -41,7 +37,7 @@ public class RoleServiceImp implements RoleService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         repository.findRoleByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Role Was Found with id " + id + " To Remove !")
+                () -> new NoContentException("No Active Role Was Found with id " + id + " To Remove!")
         );
         repository.logicalRemove(id);
     }
@@ -69,7 +65,7 @@ public class RoleServiceImp implements RoleService {
     @Override
     public Role logicalRemoveWithReturn(Long id) throws NoContentException {
         Role role = repository.findRoleByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Role Was Found with id  " + id + " To Remove !")
+                () -> new NoContentException("No Active Role Was Found with id " + id + " To Remove!")
         );
 
         role.setDeleted(true);
@@ -96,14 +92,8 @@ public class RoleServiceImp implements RoleService {
         return repository.findRoleByRoleNameAndDeletedFalse(roleName);
     }
 
-//    @Override
-//    public List<Role> findRoleByUserAndDeletedFalse(User user) throws NoContentException {
-//        return repository.findRoleByUserAndDeletedFalse(user);
-//    }
-
     @Override
     public Long countByDeletedFalse() {
         return repository.countByDeletedFalse();
     }
-
 }
