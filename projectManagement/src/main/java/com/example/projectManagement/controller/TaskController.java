@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,5 +77,40 @@ public class TaskController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Task> findAll(Model model) {
         return service.findTaskByDeletedFalse();
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "{/username}",method = RequestMethod.GET)
+    public List<Task> findByAssignedTo(@PathVariable String username) throws NoContentException{
+        return service.findTaskByAssignedToAndDeletedFalse(username);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "{/createDate}",method = RequestMethod.GET)
+    public List<Task> findByCreateDate(@PathVariable LocalDate createDate) throws NoContentException{
+        return service.findTaskByCreateDateAndDeletedFalse(createDate);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "{/dueDate}",method = RequestMethod.GET)
+    public List<Task> findByDueDate(@PathVariable LocalDate dueDate) throws NoContentException{
+        return service.findTaskByDueDateAndDeletedFalse(dueDate);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "{/priority}",method = RequestMethod.GET)
+    public List<Task> findByPriority(@PathVariable String priority) throws NoContentException{
+        return service.findTaskByPriorityAndDeletedFalse(priority);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "{/status}",method = RequestMethod.GET)
+    public List<Task> findByStatus(@PathVariable String status) throws NoContentException{
+        return service.findTaskByStatusAndDeletedFalse(status);
     }
 }

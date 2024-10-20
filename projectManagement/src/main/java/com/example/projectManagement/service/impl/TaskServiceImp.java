@@ -7,6 +7,7 @@ import com.example.projectManagement.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,20 +98,30 @@ public class TaskServiceImp implements TaskService {
         }
     }
 
-//    @Override
-//    public List<Task> findTaskByAssignedToAndDeletedFalse(String username) {
-//        return repository.findTaskByAssignedToAndDeletedFalse(username);
-//    }
-//
-//    @Override
-//    public List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate) {
-//        return repository.findTaskByCreateDateAndDeletedFalse(createDate);
-//    }
-//
-//    @Override
-//    public List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate) {
-//        return repository.findTaskByDueDateAndDeletedFalse(dueDate);
-//    }
+    @Override
+    public List<Task> findTaskByAssignedToAndDeletedFalse(String username) throws NoContentException {
+        return repository.findTaskByAssignedToAndDeletedFalse(username);
+    }
+
+    @Override
+    public List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate) throws NoContentException {
+        return repository.findTaskByCreateDateAndDeletedFalse(createDate);
+    }
+
+    @Override
+    public List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate) throws NoContentException {
+        return repository.findTaskByDueDateAndDeletedFalse(dueDate);
+    }
+
+    @Override
+    public List<Task> findTaskByPriorityAndDeletedFalse(String priority) throws NoContentException {
+        return repository.findTaskByPriorityAndDeletedFalse(priority);
+    }
+
+    @Override
+    public List<Task> findTaskByStatusAndDeletedFalse(String status) throws NoContentException {
+        return repository.findTaskByStatusAndDeletedFalse(status);
+    }
 
     @Override
     public Long countByDeletedFalse() {

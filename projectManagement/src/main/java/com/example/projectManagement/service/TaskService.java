@@ -29,11 +29,15 @@ public interface TaskService {
 
     Optional<Task> findTaskByIdAndDeletedFalse(Long id) throws NoContentException;
 
-//    List<Task> findTaskByAssignedToAndDeletedFalse(String username) throws NoContentException;
-//
-//    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate) throws NoContentException;
-//
-//    List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate) throws NoContentException;
+    List<Task> findTaskByAssignedToAndDeletedFalse(String username) throws NoContentException;
+
+    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate) throws NoContentException;
+
+    List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate) throws NoContentException;
+
+    List<Task> findTaskByPriorityAndDeletedFalse(String priority) throws NoContentException;
+
+    List<Task> findTaskByStatusAndDeletedFalse(String status) throws NoContentException;
 
     Long countByDeletedFalse();
 
