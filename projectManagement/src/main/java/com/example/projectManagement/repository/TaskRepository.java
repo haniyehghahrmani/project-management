@@ -1,12 +1,15 @@
 package com.example.projectManagement.repository;
 
 import com.example.projectManagement.model.entity.Task;
+import com.example.projectManagement.model.entity.User;
+import com.example.projectManagement.model.enums.Priority;
+import com.example.projectManagement.model.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,15 +24,15 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
 
     Optional<Task> findTaskByIdAndDeletedFalse(Long id);
 
-    List<Task> findTaskByAssignedToAndDeletedFalse(String username);
+    List<Task> findTaskByAssignedToAndDeletedFalse(List<User> assignedTo);
 
-    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDate createDate);
+    List<Task> findTaskByCreateDateAndDeletedFalse(LocalDateTime createDate);
 
-    List<Task> findTaskByDueDateAndDeletedFalse(LocalDate dueDate);
+    List<Task> findTaskByDueDateAndDeletedFalse(LocalDateTime dueDate);
 
-    List<Task> findTaskByPriorityAndDeletedFalse(String priority);
+    List<Task> findTaskByPriorityAndDeletedFalse(Priority priority);
 
-    List<Task> findTaskByStatusAndDeletedFalse(String status);
+    List<Task> findTaskByStatusAndDeletedFalse(Status status);
 
     Long countByDeletedFalse();
 }
