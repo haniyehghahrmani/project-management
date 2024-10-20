@@ -41,5 +41,4 @@ public interface TaskService {
     List<Task> findTaskByStatusAndDeletedFalse(String status) throws NoContentException;
 
     Long countByDeletedFalse();
-
 }

@@ -2,6 +2,7 @@ package com.example.projectManagement.controller;
 
 import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Task;
+import com.example.projectManagement.model.entity.User;
 import com.example.projectManagement.model.enums.Priority;
 import com.example.projectManagement.model.enums.Status;
 import com.example.projectManagement.service.TaskService;
@@ -14,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,21 +83,21 @@ public class TaskController {
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "{/username}",method = RequestMethod.GET)
-    public List<Task> findByAssignedTo(@PathVariable String username) throws NoContentException{
+    public List<Task> findByAssignedTo(@PathVariable List<User> username) throws NoContentException{
         return service.findTaskByAssignedToAndDeletedFalse(username);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "{/createDate}",method = RequestMethod.GET)
-    public List<Task> findByCreateDate(@PathVariable LocalDate createDate) throws NoContentException{
+    public List<Task> findByCreateDate(@PathVariable LocalDateTime createDate) throws NoContentException{
         return service.findTaskByCreateDateAndDeletedFalse(createDate);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "{/dueDate}",method = RequestMethod.GET)
-    public List<Task> findByDueDate(@PathVariable LocalDate dueDate) throws NoContentException{
+    public List<Task> findByDueDate(@PathVariable LocalDateTime dueDate) throws NoContentException{
         return service.findTaskByDueDateAndDeletedFalse(dueDate);
     }
 
