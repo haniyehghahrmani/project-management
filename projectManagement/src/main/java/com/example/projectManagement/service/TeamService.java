@@ -28,5 +28,7 @@ public interface TeamService {
 
     Optional<Team> findTeamByIdAndDeletedFalse(Long id) throws NoContentException;
 
+    List<Team> findTeamByTeamMembersAndDeletedFalse(String username);
+
     Long countByDeletedFalse();
 }

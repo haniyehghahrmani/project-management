@@ -32,7 +32,6 @@ public class TeamServiceImpl implements TeamService {
 
         existingTeam.setTeamName(team.getTeamName());
         existingTeam.setTeamMembers(team.getTeamMembers());
-        existingTeam.setProjectList(team.getProjectList());
         existingTeam.setEditing(true);
 
         return repository.saveAndFlush(existingTeam);
@@ -89,6 +88,11 @@ public class TeamServiceImpl implements TeamService {
         } else {
             throw new NoContentException("No Active Team Was Found with id : " + id);
         }
+    }
+
+    @Override
+    public List<Team> findTeamByTeamMembersAndDeletedFalse(String username) {
+        return repository.findTeamByTeamMembersAndDeletedFalse(username);
     }
 
     @Override
