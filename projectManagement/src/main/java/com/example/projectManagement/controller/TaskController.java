@@ -82,35 +82,35 @@ public class TaskController {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "{/username}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{username}",method = RequestMethod.GET)
     public List<Task> findByAssignedTo(@PathVariable List<User> username) throws NoContentException{
         return service.findTaskByAssignedToAndDeletedFalse(username);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "{/createDate}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{createDate}",method = RequestMethod.GET)
     public List<Task> findByCreateDate(@PathVariable LocalDateTime createDate) throws NoContentException{
         return service.findTaskByCreateDateAndDeletedFalse(createDate);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "{/dueDate}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{dueDate}",method = RequestMethod.GET)
     public List<Task> findByDueDate(@PathVariable LocalDateTime dueDate) throws NoContentException{
         return service.findTaskByDueDateAndDeletedFalse(dueDate);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "{/priority}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{priority}",method = RequestMethod.GET)
     public List<Task> findByPriority(@PathVariable String priority) throws NoContentException{
         return service.findTaskByPriorityAndDeletedFalse(priority);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "{/status}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{status}",method = RequestMethod.GET)
     public List<Task> findByStatus(@PathVariable String status) throws NoContentException{
         return service.findTaskByStatusAndDeletedFalse(status);
     }

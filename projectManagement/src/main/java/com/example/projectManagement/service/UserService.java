@@ -28,7 +28,7 @@ public interface UserService {
 
     List<User> findUserByDeletedFalse();
 
-    List<User> finUserByPersonAndDeletedFalse(Long personId);
+    List<User> findUserByPersonAndDeletedFalse(Long personId);
 
     Optional<User> findUserByIdAndDeletedFalse(Long id) throws NoContentException;
 

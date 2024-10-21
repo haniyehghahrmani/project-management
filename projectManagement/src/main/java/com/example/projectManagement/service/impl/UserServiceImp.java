@@ -83,8 +83,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<User> finUserByPersonAndDeletedFalse(Long personId) {
-        return repository.finUserByPersonAndDeletedFalse(personId);
+    public List<User> findUserByPersonAndDeletedFalse(Long personId) {
+        return repository.findUserByPerson_IdAndDeletedFalse(personId);
     }
 
     @Override

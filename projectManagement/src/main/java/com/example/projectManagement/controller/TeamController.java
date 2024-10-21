@@ -79,10 +79,10 @@ public class TeamController {
         return service.findTeamByDeletedFalse();
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public List<Team> findByTeamMembers(@PathVariable String username){
-        return service.findTeamByTeamMembersAndDeletedFalse(username);
-    }
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+//    public List<Team> findByTeamMembers(@PathVariable String username){
+//        return service.findTeamByTeamMembersAndDeletedFalse(username);
+//    }
 }

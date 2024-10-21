@@ -75,15 +75,15 @@ public class ReportServiceImpl implements ReportService {
         return report;
     }
 
-    @Override
-    public List<Report> findReportByProjectAndDeletedFalse(Long projectId) {
-        return reportRepository.findReportByProjectAndDeletedFalse(projectId);
-    }
-
-    @Override
-    public Optional<Report> findReportByAuthorAndDeletedFalse(String username) {
-        return reportRepository.findReportByAuthorAndDeletedFalse(username);
-    }
+//    @Override
+//    public List<Report> findReportByProjectAndDeletedFalse(Long projectId) {
+//        return reportRepository.findReportByProjectAndDeletedFalse(projectId);
+//    }
+//
+//    @Override
+//    public Optional<Report> findReportByAuthorAndDeletedFalse(String username) {
+//        return reportRepository.findReportByAuthorAndDeletedFalse(username);
+//    }
 
     @Override
     public List<Report> findReportByGeneratedAtAndDeletedFalse(LocalDate generatedAt) {

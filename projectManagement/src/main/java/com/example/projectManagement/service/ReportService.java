@@ -28,9 +28,9 @@ public interface ReportService {
 
     Optional<Report> findReportByIdAndDeletedFalse(Long id) throws NoContentException;
 
-    List<Report> findReportByProjectAndDeletedFalse(Long projectId);
-
-    Optional<Report> findReportByAuthorAndDeletedFalse(String username);
+//    List<Report> findReportByProjectAndDeletedFalse(Long projectId);
+//
+//    Optional<Report> findReportByAuthorAndDeletedFalse(String username);
 
     List<Report> findReportByGeneratedAtAndDeletedFalse(LocalDate generatedAt);
 }

@@ -21,9 +21,9 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     Optional<Report> findReportByIdAndDeletedFalse(Long id);
 
-    List<Report> findReportByProjectAndDeletedFalse(Long id);
-
-    Optional<Report> findReportByAuthorAndDeletedFalse(String username);
+//    List<Report> findReportByProjectAndDeletedFalse(Long id);
+//
+//    Optional<Report> findReportByAuthorAndDeletedFalse(String username);
 
     List<Report> findReportByGeneratedAtAndDeletedFalse(LocalDate generatedAt);
 

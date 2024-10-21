@@ -20,7 +20,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Optional<Team> findTeamByIdAndDeletedFalse(Long id);
 
-    List<Team> findTeamByTeamMembersAndDeletedFalse(String username);
+//    List<Team> findTeamByTeamMembersAndDeletedFalse(String username);
 
     Long countByDeletedFalse();
 }

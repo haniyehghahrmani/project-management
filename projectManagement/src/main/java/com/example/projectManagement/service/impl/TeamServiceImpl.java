@@ -90,10 +90,10 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
-    @Override
-    public List<Team> findTeamByTeamMembersAndDeletedFalse(String username) {
-        return repository.findTeamByTeamMembersAndDeletedFalse(username);
-    }
+//    @Override
+//    public List<Team> findTeamByTeamMembersAndDeletedFalse(String username) {
+//        return repository.findTeamByTeamMembersAndDeletedFalse(username);
+//    }
 
     @Override
     public Long countByDeletedFalse() {
