@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Project</h1>
+<div th:each="project : ${projectList}" >
+    <h3 th:text="${project.name}"></h3>
+</div>
+
+<select name="status" id="status">
+    <option th:each="status :${statusList}" th:value="${status}" th:text="${status}"></option>
+</select>
+</body>
+</html>

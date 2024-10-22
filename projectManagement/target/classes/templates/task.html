@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,400,1,200"/>
+
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/popup.css">
+</head>
+<body>
+<div class="main-container">
+
+    <!--Add New Button-->
+    <button class="add-new" onclick="addNew()">
+    <span class="material-symbols-outlined">
+        add
+    </span>
+    </button>
+    <!--Add New Button-->
+
+    <br><br>
+
+    <!--Save Modal-->
+    <div id="save-modal" class="modal">
+        <div id="save-modal-content" class="modal-body">
+
+            <div class="modal-form">
+                <form id="save-form" th:object="${task}">
+                    <div th:replace="~{/fragments/task/task-fragment :: taskFormContent(title,description,createDate,dueDate,priority,status)  }"></div>
+
+                    <label th:for="user">Select User:</label>
+                    <select id="user" th:field="*{assignedTo}" name="user" required>
+                        <option value="">Select</option>
+                        <option th:each="p : ${user}" th:value="${p.id}" th:utext="${p.username}"></option>
+                    </select>
+                    <br>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button onclick="save('/task' ,'save-form')">Save</button>
+                <button onclick="closeModal()">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+    <!--Save Modal-->
+
+    <!--Table-->
+    <div class="table" th:if="${taskList.size() > 0}">
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>title</th>
+                <th>description</th>
+                <th>assignedTo</th>
+                <th>createDate</th>
+                <th>dueDate</th>
+                <th>priority</th>
+                <th>status</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="task :${taskList}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.title}"></td>
+                <td th:text="${task.description}"></td>
+                <td th:text="${task.assignedTo.username}"></td>
+                <td th:text="${task.createDate}"></td>
+                <td th:text="${task.dueDate}"></td>
+                <td th:text="${task.priority}"></td>
+                <td th:text="${task.status}"></td>
+
+                <td><a th:data-name="${task.id}" th:onclick="|findById('/task', this.getAttribute('data-name'))|">
+                        <span class="material-symbols-outlined edit">
+                            edit
+                        </span>
+                </a></td>
+                <td><a th:data-name="${task.id}" th:onclick="|remove('/task', this.getAttribute('data-name'))|">
+                        <span class="material-symbols-outlined delete">
+                            delete
+                        </span>
+                </a></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <!--Table-->
+
+    <!--Edit Modal-->
+    <div id="edit-modal" class="modal">
+        <div id="edit-modal-content" class="modal-body">
+
+            <div class="modal-form">
+                <form id="edit-form">
+                    <input type="text" id="id" name="id" hidden="hidden">
+                    <div th:replace="~{/fragments/task/task-fragment :: taskFormContent(title,description,createDate,dueDate,priority,status)  }"></div>
+
+                    <label th:for="user">Select User:</label>
+                    <select id="edit-user" th:field="*{user}" name="user" required>
+                        <option value="">Select</option>
+                        <option th:each="p : ${user}" th:value="${p.id}" th:utext="${p.username}"></option>
+                    </select>
+                    <br>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button onclick="edit('/task' , 'edit-form')">Edit</button>
+                <button onclick="closeModal()">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+    <!--Edit Modal-->
+
+    <!--PopUp-->
+    <div th:replace="~{/fragments/popup/popup-fragment}"></div>
+    <!--PopUp-->
+
+</div>
+<!--Main Container-->
+
+<script src="/js/template.js"></script>
+<script src="/js/task.js"></script>
+<script src="/js/popup.js"></script>
+
+</body>
+</html>

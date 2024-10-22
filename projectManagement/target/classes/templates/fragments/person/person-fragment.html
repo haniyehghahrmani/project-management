@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Person Form Fragment</title>
+</head>
+<body>
+<div th:fragment="personFormContent(name ,lastname,  nationalId ,birthdate ,gender ) ">
+
+    <label th:for="${name}">Name :</label>
+    <input type="text" th:id="${name}" name="name" placeholder="Name">
+    <!--    <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Invalid Name !</span>-->
+    <br>
+    <label th:for="${lastname}">Family :</label>
+    <input type="text" th:id="${lastname}" name="lastname" placeholder="Family">
+    <!--    <span class="error" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Invalid Family !</span>-->
+    <br>
+
+    <label th:for="${nationalId}">National ID :</label>
+    <input type="text" th:id="${nationalId}" name="nationalId" placeholder="National ID">
+    <!--    <span class="error" th:if="${#fields.hasErrors('nationalId')}" th:errors="*{nationalID}">Invalid National ID !</span>-->
+    <br>
+
+
+    <label th:for="${birthdate}">Birthdate :</label>
+    <input type="date" th:id="${birthdate}" name="birthdate" placeholder="Birthdate">
+    <!--    <span class="error" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}">Invalid Birthdate !</span>-->
+    <br>
+
+    <label th:for="${gender}">Gender :</label>
+    <select th:id="${gender}" name="gender">
+        <option selected disabled value="-1">Choose Your Gender</option>
+        <option th:each="gender : ${genders}" th:value="${gender.name()}" th:text="${gender.english} + ' / ' + ${gender.persian}"></option>
+    </select>
+    <!--    <span class="error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Invalid gender !</span>-->
+    <br>
+
+
+
+
+
+</div>
+
+</body>
+</html>
