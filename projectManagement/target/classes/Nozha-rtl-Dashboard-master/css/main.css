@@ -729,8 +729,8 @@ body.modal-open main {
 }
 
 .modal.show .modal-dialog {
-  -webkit-transform: translate(0, calc(0.5px));
-  transform: translate(0em, calc(0.5px));
+  -webkit-transform: translate(0, calc(0-.5px));
+  transform: translate(0em, calc(0-.5px));
 }
 
 
@@ -899,7 +899,7 @@ body.modal-open main {
 }
 
 select.form-control:not([size]):not([multiple]) {
-  -webkit-appearance: none;
+  -webkit-appearance: auto;
   height: calc(2.75rem + 2px);
 }
 
