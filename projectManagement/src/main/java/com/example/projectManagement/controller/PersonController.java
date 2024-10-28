@@ -99,4 +99,5 @@ public class PersonController {
     public Optional<Person> findByNationalID(@RequestParam String nationalID) throws NoContentException {
         return service.findPersonByNationalIDAndDeletedFalse(nationalID);
     }
+
 }

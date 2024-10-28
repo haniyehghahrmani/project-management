@@ -11,6 +11,7 @@ public enum Gender {
     FEMALE("Female", "زن");
 
     private final String english;
+
     private final String persian;
 
     public String getTranslation(String language) {
@@ -25,4 +26,5 @@ public enum Gender {
     public String toString() {
         return english + " / " + persian;
     }
+
 }

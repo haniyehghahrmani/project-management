@@ -1,7 +1,6 @@
 package com.example.projectManagement.model.entity;
 
 import com.example.projectManagement.model.enums.Gender;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -75,4 +74,5 @@ public class Person extends Base {
             this.birthdate = PersianDate.parse(faBirthdate).toGregorian();
         }
     }
+
 }

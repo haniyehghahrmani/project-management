@@ -9,9 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
-public interface PersonRepository extends JpaRepository<Person,Long>{
+public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Modifying
     @Query("update PersonEntity oo set oo.deleted=true where oo.id=:id")
@@ -26,4 +25,5 @@ public interface PersonRepository extends JpaRepository<Person,Long>{
     Optional<Person> findPersonByNationalIdAndDeletedFalse(String nationalId);
 
     Long countByDeletedFalse();
+
 }

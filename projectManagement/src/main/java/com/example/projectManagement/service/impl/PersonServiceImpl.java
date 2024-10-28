@@ -41,7 +41,6 @@ public class PersonServiceImpl implements PersonService {
         return repository.saveAndFlush(existingPerson);
     }
 
-
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         repository.findPersonByIdAndDeletedFalse(id).orElseThrow(
