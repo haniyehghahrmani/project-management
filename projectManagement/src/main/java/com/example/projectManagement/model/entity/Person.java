@@ -1,6 +1,7 @@
 package com.example.projectManagement.model.entity;
 
 import com.example.projectManagement.model.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -20,7 +21,7 @@ import java.time.LocalDate;
 
 @Entity(name = "PersonEntity")
 @Table(name = "PersonTbl")
-public class Person extends Base{
+public class Person extends Base {
 
     @Id
     @SequenceGenerator(name = "personSeq", sequenceName = "person_seq", allocationSize = 1)
@@ -28,7 +29,7 @@ public class Person extends Base{
     @Column(name = "person_id")
     private Long id;
 
-    @Column(name = "person_name",  columnDefinition = "NVARCHAR2(50)")
+    @Column(name = "person_name", columnDefinition = "NVARCHAR2(50)")
     @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Name")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     @NotBlank(message = "Should Not Be Null")
@@ -62,11 +63,16 @@ public class Person extends Base{
 //    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "person")
 //    private List<User> user;
 
-    public String getFaBirthDate() {
-        return String.valueOf(PersianDate.fromGregorian(birthdate));
+    public String getFaBirthdate() {
+        if (birthdate != null) {
+            return PersianDate.fromGregorian(birthdate).toString();
+        }
+        return null;
     }
 
-    public void setFaBirthDate(String faBirthDate) {
-        this.birthdate = PersianDate.parse(faBirthDate).toGregorian();
+    public void setFaBirthdate(String faBirthdate) {
+        if (faBirthdate != null && !faBirthdate.isEmpty()) {
+            this.birthdate = PersianDate.parse(faBirthdate).toGregorian();
+        }
     }
 }
