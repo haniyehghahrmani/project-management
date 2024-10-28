@@ -33,9 +33,9 @@ public class PermissionController {
     }
 
     @PostMapping
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Permission save(@Valid @RequestBody Permission permission, BindingResult result) {
+    @ResponseBody
+    public Permission save(@Valid Permission permission, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -48,10 +48,10 @@ public class PermissionController {
         return service.save(permission);
     }
 
-    @PutMapping("/{id}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public Permission edit(@PathVariable Long id, @Valid @RequestBody Permission permission, BindingResult result) throws NoContentException {
+    @PutMapping
+    public Permission edit(@Valid Permission permission, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
@@ -61,7 +61,6 @@ public class PermissionController {
                             .toList().toString()
             );
         }
-        permission.setId(id);
         return service.update(permission);
     }
 
@@ -85,4 +84,5 @@ public class PermissionController {
     public List<Permission> findAll() {
         return service.findAll();
     }
+
 }

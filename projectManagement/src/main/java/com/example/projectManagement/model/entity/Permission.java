@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -55,4 +54,5 @@ public class Permission extends Base{
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }
