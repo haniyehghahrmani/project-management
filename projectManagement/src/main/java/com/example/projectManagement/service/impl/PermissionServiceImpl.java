@@ -4,7 +4,6 @@ import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Permission;
 import com.example.projectManagement.repository.PermissionRepository;
 import com.example.projectManagement.service.PermissionService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +26,16 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission update(Permission permission) throws NoContentException {
-       Permission existingPermission=permissionRepository.findById(permission.getId())
-               .orElseThrow(
-                       ()->new NoContentException("No Active Permission Was Found with id " + permission.getId() + " To Update!")
-               );
+        Permission existingPermission = permissionRepository.findById(permission.getId())
+                .orElseThrow(
+                        () -> new NoContentException("No Active Permission Was Found with id " + permission.getId() + " To Update!")
+                );
 
-       existingPermission.setName(permission.getName());
-       existingPermission.setDescription(permission.getDescription());
-       existingPermission.setEditing(true);
+        existingPermission.setName(permission.getName());
+        existingPermission.setDescription(permission.getDescription());
+        existingPermission.setEditing(true);
 
-       return permissionRepository.saveAndFlush(existingPermission);
+        return permissionRepository.saveAndFlush(existingPermission);
     }
 
     @Override
@@ -107,4 +106,5 @@ public class PermissionServiceImpl implements PermissionService {
         permissionRepository.delete(permission);
         return permission;
     }
+
 }
