@@ -26,7 +26,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public Permission update(@Valid Permission permission) throws NoContentException {
+    public Permission update(Permission permission) throws NoContentException {
        Permission existingPermission=permissionRepository.findById(permission.getId())
                .orElseThrow(
                        ()->new NoContentException("No Active Permission Was Found with id " + permission.getId() + " To Update!")

@@ -48,9 +48,9 @@ public class PermissionController {
         return service.save(permission);
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public Permission edit(@Valid Permission permission, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
@@ -65,22 +65,22 @@ public class PermissionController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
     public void remove(@PathVariable Long id) throws NoContentException {
         service.delete(id);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public Optional<Permission> findById(@PathVariable Long id) throws NoContentException {
         return service.findById(id);
     }
 
     @GetMapping("/all")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public List<Permission> findAll() {
         return service.findAll();
     }
