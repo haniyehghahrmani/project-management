@@ -26,7 +26,7 @@ public class PersonController {
         this.service = service;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String personForm(Model model) {
         model.addAttribute("personList", service.findPersonByDeletedFalse());
         model.addAttribute("person", new Person());
@@ -34,9 +34,9 @@ public class PersonController {
         return "person";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
     public Person save(@Valid Person person, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
@@ -50,8 +50,9 @@ public class PersonController {
         return service.save(person);
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT)
     public Person edit(@Valid Person person, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
@@ -65,37 +66,37 @@ public class PersonController {
         return service.update(person);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Person remove(@PathVariable Long id) throws NoContentException {
         return service.logicalRemoveWithReturn(id);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Optional<Person> findById(@PathVariable Long id) throws NoContentException {
         return service.findPersonByIdAndDeletedFalse(id);
     }
 
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Person> findAll() {
         return service.findPersonByDeletedFalse();
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/findByNameAndLastname")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public List<Person> findByNameAndLastname(@RequestParam String name, @RequestParam String lastname) {
         return service.findPersonByNameAndLastnameAndDeletedFalse(name, lastname);
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/findByNationalID")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public Optional<Person> findByNationalID(@RequestParam String nationalID) throws NoContentException {
         return service.findPersonByNationalIDAndDeletedFalse(nationalID);
     }
