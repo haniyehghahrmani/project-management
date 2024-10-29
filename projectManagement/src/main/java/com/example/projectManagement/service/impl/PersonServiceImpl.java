@@ -4,7 +4,6 @@ import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.repository.PersonRepository;
 import com.example.projectManagement.service.PersonService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +19,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person save(@Valid Person person) {
+    public Person save(Person person) {
         return repository.save(person);
     }
 
     @Override
-    public Person update(@Valid Person person) throws NoContentException {
+    public Person update(Person person) throws NoContentException {
         Person existingPerson = repository.findById(person.getId())
                 .orElseThrow(
                         () -> new NoContentException("No Active Person Was Found with id " + person.getId() + " To Update!")
