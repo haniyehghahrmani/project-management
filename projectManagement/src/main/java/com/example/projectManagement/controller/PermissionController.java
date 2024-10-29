@@ -51,7 +51,7 @@ public class PermissionController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Permission edit(@Valid Permission permission, BindingResult result) throws NoContentException {
+    public Permission update(@Valid Permission permission, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result

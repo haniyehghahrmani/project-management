@@ -18,6 +18,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/roles")
 public class RoleController {
+
     private final RoleService service;
 
     public RoleController(RoleService service) {
@@ -32,9 +33,9 @@ public class RoleController {
     }
 
     @PostMapping
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Role save(@Valid @RequestBody Role role, BindingResult result) {
+    @ResponseBody
+    public Role save(@Valid Role role, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result.getAllErrors()
@@ -46,10 +47,10 @@ public class RoleController {
         return service.save(role);
     }
 
-    @PutMapping("/{id}")
-    @ResponseBody
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Role update(@PathVariable Long id, @Valid @RequestBody Role role, BindingResult result) throws NoContentException {
+    @ResponseBody
+    public Role update(@Valid Role role, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result.getAllErrors()
@@ -58,28 +59,35 @@ public class RoleController {
                             .toList().toString()
             );
         }
-        role.setId(id);
         return service.update(role);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
     public void remove(@PathVariable Long id) throws NoContentException {
-        service.logicalRemove(id);
+        service.logicalRemoveWithReturn(id);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public Optional<Role> findById(@PathVariable Long id) throws NoContentException {
-        return service.findById(id);
+        return service.findRoleByIdAndDeletedFalse(id);
     }
 
     @GetMapping("/all")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public List<Role> findAll() {
-        return service.findAll();
+        return service.findRoleByDeletedFalse();
     }
+
+    @GetMapping("/findByRoleName")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Optional<Role> findByRoleName(@RequestParam String roleName) throws NoContentException {
+        return service.findRoleByRoleNameAndDeletedFalse(roleName);
+    }
+
 }

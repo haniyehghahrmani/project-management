@@ -5,6 +5,7 @@ import com.example.projectManagement.model.entity.Role;
 import com.example.projectManagement.repository.RoleRepository;
 import com.example.projectManagement.service.RoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,12 +30,14 @@ public class RoleServiceImp implements RoleService {
                 .orElseThrow(() -> new NoContentException("No Active Role Was Found with id " + role.getId() + " To Update!"));
 
         existingRole.setRoleName(role.getRoleName());
+        existingRole.setPermissions(role.getPermissions());
         existingRole.setEditing(true);
 
         return repository.saveAndFlush(existingRole);
     }
 
     @Override
+    @Transactional
     public void logicalRemove(Long id) throws NoContentException {
         repository.findRoleByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active Role Was Found with id " + id + " To Remove!")
@@ -63,6 +66,7 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
+    @Transactional
     public Role logicalRemoveWithReturn(Long id) throws NoContentException {
         Role role = repository.findRoleByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active Role Was Found with id " + id + " To Remove!")
@@ -88,7 +92,7 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
-    public List<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException {
+    public Optional<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException {
         return repository.findRoleByRoleNameAndDeletedFalse(roleName);
     }
 
@@ -96,4 +100,5 @@ public class RoleServiceImp implements RoleService {
     public Long countByDeletedFalse() {
         return repository.countByDeletedFalse();
     }
+
 }

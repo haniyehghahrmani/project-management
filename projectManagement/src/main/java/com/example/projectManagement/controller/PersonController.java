@@ -53,7 +53,7 @@ public class PersonController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Person edit(@Valid Person person, BindingResult result) throws NoContentException {
+    public Person update(@Valid Person person, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result

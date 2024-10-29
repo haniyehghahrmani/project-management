@@ -22,13 +22,14 @@ public interface RoleService {
 
     Long getRolesCount();
 
+    @Transactional
     Role logicalRemoveWithReturn(Long id) throws NoContentException;
 
     List<Role> findRoleByDeletedFalse();
 
     Optional<Role> findRoleByIdAndDeletedFalse(Long id) throws NoContentException;
 
-    List<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException;
+    Optional<Role> findRoleByRoleNameAndDeletedFalse(String roleName) throws NoContentException;
 
     Long countByDeletedFalse();
 }
