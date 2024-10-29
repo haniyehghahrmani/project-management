@@ -67,22 +67,22 @@ public class PermissionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void remove(@PathVariable Long id) throws NoContentException {
-        service.delete(id);
+    public Permission remove(@PathVariable Long id) throws NoContentException {
+        return service.logicalRemoveWithReturn(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Optional<Permission> findById(@PathVariable Long id) throws NoContentException {
-        return service.findById(id);
+        return service.findPermissionByIdAndDeletedFalse(id);
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<Permission> findAll() {
-        return service.findAll();
+        return service.findPermissionByDeletedFalse();
     }
 
 }

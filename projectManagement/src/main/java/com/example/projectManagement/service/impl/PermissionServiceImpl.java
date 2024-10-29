@@ -69,11 +69,12 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional
     public Permission logicalRemoveWithReturn(Long id) throws NoContentException {
-        if (!permissionRepository.existsById(id)) {
-            throw new NoContentException("Permission with id " + id + " not found.");
-        }
-        permissionRepository.logicalRemove(id);
-        return permissionRepository.findById(id).orElseThrow(() -> new NoContentException("Permission with id " + id + " not found."));
+        Permission permission = permissionRepository.findPermissionByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active permission Was Found with id  " + id + " To Remove !")
+        );
+
+        permission.setDeleted(true);
+        return permissionRepository.save(permission);
     }
 
     @Override

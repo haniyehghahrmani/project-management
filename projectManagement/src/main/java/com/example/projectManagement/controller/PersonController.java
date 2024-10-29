@@ -94,11 +94,11 @@ public class PersonController {
         return service.findPersonByNameAndLastnameAndDeletedFalse(name, lastname);
     }
 
-    @GetMapping("/findByNationalID")
+    @GetMapping("/findByNationalId")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Optional<Person> findByNationalID(@RequestParam String nationalID) throws NoContentException {
-        return service.findPersonByNationalIDAndDeletedFalse(nationalID);
+    public Optional<Person> findByNationalID(@RequestParam String nationalId) throws NoContentException {
+        return service.findPersonByNationalIDAndDeletedFalse(nationalId);
     }
 
 }

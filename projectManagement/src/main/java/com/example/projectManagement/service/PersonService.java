@@ -22,6 +22,7 @@ public interface PersonService {
 
     Long getPersonsCount();
 
+    @Transactional
     Person logicalRemoveWithReturn(Long id) throws NoContentException;
 
     List<Person> findPersonByDeletedFalse();

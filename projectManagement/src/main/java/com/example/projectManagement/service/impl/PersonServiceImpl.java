@@ -5,6 +5,7 @@ import com.example.projectManagement.model.entity.Person;
 import com.example.projectManagement.repository.PersonRepository;
 import com.example.projectManagement.service.PersonService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public void logicalRemove(Long id) throws NoContentException {
         repository.findPersonByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active Person Was Found with id " + id + " To Remove !")
@@ -69,6 +71,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public Person logicalRemoveWithReturn(Long id) throws NoContentException {
         Person person = repository.findPersonByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active Person Was Found with id  " + id + " To Remove !")
