@@ -8,7 +8,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -41,15 +40,15 @@ public class User extends Base {
     @Column(name = "user_status")
     private boolean status = true;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "user_role_id")
     private Role role;
 
-    @ManyToMany(mappedBy = "teamMembers", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "teamMembers", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Team> teamList;
 
 }

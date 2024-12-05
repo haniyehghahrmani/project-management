@@ -7,6 +7,7 @@ import com.example.projectManagement.service.RoleService;
 import com.example.projectManagement.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,19 +36,19 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String userForm(Model model){
-        model.addAttribute("userList",service.findUserByDeletedFalse());
-        model.addAttribute("user",new User());
-        model.addAttribute("person",personService.findAll());
-        model.addAttribute("role",roleService.findAll());
+    public String userForm(Model model) {
+        model.addAttribute("userList", service.findUserByDeletedFalse());
+        model.addAttribute("user", new User());
+        model.addAttribute("person", personService.findAll());
+        model.addAttribute("role", roleService.findAll());
         return "user";
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.POST)
-    public User save(@Valid User user, Model model, BindingResult result){
-        if (result.hasErrors()){
+    public User save(@Valid User user, Model model, BindingResult result) {
+        if (result.hasErrors()) {
             throw new ValidationException(
                     result
                             .getAllErrors()
@@ -59,46 +60,48 @@ public class UserController {
         return service.save(user);
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @RequestMapping(method = RequestMethod.PUT)
-    public User edit(@Valid User user,Model model,BindingResult result) throws NoContentException {
+    public User edit(@Valid User user, BindingResult result) throws NoContentException {
         if (result.hasErrors()) {
             throw new ValidationException(
                     result
                             .getAllErrors()
                             .stream()
-                            .map((event) -> event.getDefaultMessage())
-                            .collect(Collectors.toList()).toString()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
             );
         }
         return service.update(user);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public User remove(Model model,@PathVariable Long id)throws NoContentException{
+    public User remove(@PathVariable Long id) throws NoContentException {
         return service.logicalRemoveWithReturn(id);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Optional<User> findById(Model model,@PathVariable Long id) throws NoContentException {
+    public Optional<User> findById(@PathVariable Long id) throws NoContentException {
         return service.findUserByIdAndDeletedFalse(id);
     }
 
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all",method = RequestMethod.GET)
-    public List<User> findAll(Model model){
+    public List<User> findAll(Model model) {
         return service.findUserByDeletedFalse();
     }
 
+    @GetMapping("/findByUsername")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{username}",method = RequestMethod.GET)
-    public Optional<User> findByUsername(@PathVariable String username)throws NoContentException{
+    public Optional<User> findByUsername(@RequestParam String username) throws NoContentException {
         return service.findUserByUsernameAndDeletedFalse(username);
     }
+
 }

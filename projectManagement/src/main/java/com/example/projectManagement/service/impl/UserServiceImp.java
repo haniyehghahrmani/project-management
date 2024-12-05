@@ -6,6 +6,7 @@ import com.example.projectManagement.model.entity.User;
 import com.example.projectManagement.repository.UserRepository;
 import com.example.projectManagement.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class UserServiceImp implements UserService {
 
     private final UserRepository repository;
 
-    public UserServiceImp(UserRepository repository){
+    public UserServiceImp(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -26,23 +27,24 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User update(User user) throws NoContentException {
-        User existingUser=repository.findById(user.getId()).orElseThrow(
+        User existingUser = repository.findById(user.getId()).orElseThrow(
                 () -> new NoContentException("No Active User Was Found with id " + user.getId() + " To Update!")
         );
 
         existingUser.setUsername(user.getUsername());
         existingUser.setPassword(user.getPassword());
         existingUser.setPerson(user.getPerson());
-//        existingUser.setRole(user.getRole());
+        existingUser.setRole(user.getRole());
         existingUser.setEditing(true);
 
         return repository.saveAndFlush(existingUser);
     }
 
     @Override
+    @Transactional
     public void logicalRemove(Long id) throws NoContentException {
         repository.findUserByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active User Was Found With ID " +id+  " To Remove !")
+                () -> new NoContentException("No Active User Was Found With ID " + id + " To Remove !")
         );
         repository.logicalRemove(id);
     }
@@ -58,7 +60,7 @@ public class UserServiceImp implements UserService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No User Was Found with id : " + id );
+            throw new NoContentException("No User Was Found with id : " + id);
         }
     }
 
@@ -68,14 +70,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public User logicalRemoveWithReturn(Long id) throws NoContentException {
         User user = repository.findUserByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active User Was Found with id  " + id  +" To Remove !")
+                () -> new NoContentException("No Active User Was Found with id  " + id + " To Remove !")
         );
         user.setDeleted(true);
         return repository.save(user);
     }
-
 
     @Override
     public List<User> findUserByDeletedFalse() {
@@ -93,7 +95,7 @@ public class UserServiceImp implements UserService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No Active User Was Found with id : " + id );
+            throw new NoContentException("No Active User Was Found with id : " + id);
         }
     }
 
@@ -103,29 +105,29 @@ public class UserServiceImp implements UserService {
         if (optional.isPresent()) {
             return optional;
         } else {
-            throw new NoContentException("No Active User Was Found with username : " + username );
+            throw new NoContentException("No Active User Was Found with username : " + username);
         }
     }
+
     @Override
     public boolean existsUserByUsernameAndDeletedFalse(String username) throws NoUserException {
-        if (repository.existsUserByUsernameAndDeletedFalse(username)){
+        if (repository.existsUserByUsernameAndDeletedFalse(username)) {
             return existsUserByUsernameAndDeletedFalse(username);
 
-        }else {
+        } else {
             throw new NoUserException("No User Was Found !");
         }
     }
 
     @Override
-    public boolean existsUserByUsernameAndPasswordAndDeletedIsFalse(String username, String password) throws NoUserException{
-        if (repository.existsUserByUsernameAndPasswordAndDeletedIsFalse(username,password)){
-            return existsUserByUsernameAndPasswordAndDeletedIsFalse(username,password);
+    public boolean existsUserByUsernameAndPasswordAndDeletedIsFalse(String username, String password) throws NoUserException {
+        if (repository.existsUserByUsernameAndPasswordAndDeletedIsFalse(username, password)) {
+            return existsUserByUsernameAndPasswordAndDeletedIsFalse(username, password);
 
-        }else {
+        } else {
             throw new NoUserException("No User Was Found !");
         }
     }
-
 
     @Override
     public Long countByDeletedFalse() {
