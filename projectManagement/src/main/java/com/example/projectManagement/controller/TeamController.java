@@ -7,6 +7,7 @@ import com.example.projectManagement.service.TeamService;
 import com.example.projectManagement.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,6 +57,22 @@ public class TeamController {
             );
         }
         return service.save(team);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Team edit(@Valid Team team, BindingResult result) throws NoContentException {
+        if (result.hasErrors()) {
+            throw new ValidationException(
+                    result
+                            .getAllErrors()
+                            .stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
+            );
+        }
+        return service.update(team);
     }
 
     @ResponseBody

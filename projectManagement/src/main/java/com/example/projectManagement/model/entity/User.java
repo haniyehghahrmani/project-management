@@ -1,5 +1,6 @@
 package com.example.projectManagement.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -49,6 +50,7 @@ public class User extends Base {
     private Role role;
 
     @ManyToMany(mappedBy = "teamMembers", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonBackReference
     private List<Team> teamList;
 
 }
