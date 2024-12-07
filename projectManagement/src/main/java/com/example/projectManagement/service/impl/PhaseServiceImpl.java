@@ -33,6 +33,7 @@ public class PhaseServiceImpl implements PhaseService {
         existingPhase.setPhaseName(phase.getPhaseName());
         existingPhase.setProject(phase.getProject());
         existingPhase.setTaskList(phase.getTaskList());
+        existingPhase.setEditing(true);
 
         return repository.saveAndFlush(existingPhase);
     }

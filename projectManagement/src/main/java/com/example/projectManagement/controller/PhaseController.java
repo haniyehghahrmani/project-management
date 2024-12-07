@@ -6,6 +6,7 @@ import com.example.projectManagement.service.PhaseService;
 import com.example.projectManagement.service.ProjectService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,6 +49,22 @@ public class PhaseController {
             throw new ValidationException(errorMessages);
         }
         return phaseService.save(phase);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Phase update(@Valid Phase phase, BindingResult result) throws NoContentException {
+        if (result.hasErrors()) {
+            throw new ValidationException(
+                    result
+                            .getAllErrors()
+                            .stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
+            );
+        }
+        return phaseService.update(phase);
     }
 
     @ResponseBody

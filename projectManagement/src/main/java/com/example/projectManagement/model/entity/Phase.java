@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity(name = "PhaseEntity")
 @Table(name = "PhaseTbl")
-public class Phase extends Base{
+public class Phase extends Base {
 
     @Id
     @SequenceGenerator(name = "phaseSeq", sequenceName = "phase_seq", allocationSize = 1)
@@ -34,10 +34,10 @@ public class Phase extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String phaseName;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     public List<Task> taskList;
 }
