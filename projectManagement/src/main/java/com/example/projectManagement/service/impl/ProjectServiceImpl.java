@@ -35,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
         existingProject.setEndDate(project.getEndDate());
         existingProject.setStatus(project.getStatus());
         existingProject.setPhaseList(project.getPhaseList());
+        existingProject.setEditing(true);
 
         return repository.saveAndFlush(existingProject);
     }

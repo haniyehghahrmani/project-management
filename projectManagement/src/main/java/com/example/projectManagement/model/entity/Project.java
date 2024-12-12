@@ -1,6 +1,7 @@
 package com.example.projectManagement.model.entity;
 
 import com.example.projectManagement.model.enums.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -65,29 +66,40 @@ public class Project extends Base{
 //    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
 //    public List<User> teamMembers;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.EAGER)
+    @JsonBackReference
     public List<Phase> phaseList;
 
     public String getFaStartDate() {
-        return String.valueOf(PersianDate.fromGregorian(startDate));
+        if (startDate!= null){
+            return PersianDate.fromGregorian(startDate).toString();
+        }
+        return null;
     }
 
     public void setFaStartDate(String faStartDate) {
-        this.startDate = PersianDate.parse(faStartDate).toGregorian();
+        if (faStartDate!=null && !faStartDate.isEmpty()){
+            this.startDate=PersianDate.parse(faStartDate).toGregorian();
+        }
     }
 
     public String getFaEndDate() {
-        return String.valueOf(PersianDate.fromGregorian(endDate));
+        if (endDate!= null){
+            return PersianDate.fromGregorian(endDate).toString();
+        }
+        return null;
     }
 
     public void setFaEndDate(String faEndDate) {
-        this.endDate = PersianDate.parse(faEndDate).toGregorian();
+        if (faEndDate!=null && !faEndDate.isEmpty()){
+            this.endDate=PersianDate.parse(faEndDate).toGregorian();
+        }
     }
 
-    public void setUser(List<User> teamMembers) {
-    }
+//    public void setUser(List<User> teamMembers) {
+//    }
 
-    public List<Task> getTask() {
-        return null;
-    }
+//    public List<Task> getTask() {
+//        return null;
+//    }
 }

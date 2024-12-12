@@ -1,5 +1,6 @@
 package com.example.projectManagement.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -34,8 +35,9 @@ public class Phase extends Base {
     @NotBlank(message = "Should Not Be Null")
     private String phaseName;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
+    @JsonManagedReference
     private Project project;
 
     @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
