@@ -55,6 +55,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List<User> findAllById(List<Long> userId) {
+        return repository.findAllById(userId);
+    }
+
+    @Override
     public Optional<User> findById(Long id) throws NoContentException {
         Optional<User> optional = repository.findById(id);
         if (optional.isPresent()) {

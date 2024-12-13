@@ -2,6 +2,7 @@ package com.example.projectManagement.model.entity;
 
 import com.example.projectManagement.model.enums.Priority;
 import com.example.projectManagement.model.enums.Status;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.mfathi91.time.PersianDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -44,11 +45,8 @@ public class Task extends Base{
     @NotBlank(message = "Should Not Be Null")
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<User> assignedTo;
-
-    @OneToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Phase> phaseList;
 
     @Column(name = "task_createDate")
     @PastOrPresent
@@ -74,11 +72,12 @@ public class Task extends Base{
     @NotNull(message = "Should Not Be Null")
     private Status status;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Task> subTasks;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "phase_id")
+    @JsonManagedReference
     private Phase phase;
 
     //TODO: Check This Method.

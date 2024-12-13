@@ -9,11 +9,14 @@ import com.example.projectManagement.service.TaskService;
 import com.example.projectManagement.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.github.mfathi91.time.PersianDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +36,7 @@ public class TaskController {
         this.userService = userService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String taskForm(Model model) {
         model.addAttribute("taskList", service.findTaskByDeletedFalse());
         model.addAttribute("task", new Task());
@@ -43,9 +46,9 @@ public class TaskController {
         return "task";
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(method = RequestMethod.POST)
     public Task save(@Valid Task task, Model model, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(
@@ -59,59 +62,85 @@ public class TaskController {
         return service.save(task);
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Task remove(Model model, @PathVariable Long id) throws NoContentException {
+    public Task update(@Valid Task task, BindingResult result) throws NoContentException {
+        if (result.hasErrors()) {
+            throw new ValidationException(
+                    result
+                            .getAllErrors()
+                            .stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                            .toList().toString()
+            );
+        }
+        return service.update(task);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public Task remove(@PathVariable Long id) throws NoContentException {
         return service.logicalRemoveWithReturn(id);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Optional<Task> findById(Model model, @PathVariable Long id) throws NoContentException {
+    public Optional<Task> findById(@PathVariable Long id) throws NoContentException {
         return service.findTaskByIdAndDeletedFalse(id);
     }
 
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Task> findAll(Model model) {
+    public List<Task> findAll() {
         return service.findTaskByDeletedFalse();
     }
 
+    @GetMapping("/findByAssignedTo")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{username}",method = RequestMethod.GET)
-    public List<Task> findByAssignedTo(@PathVariable List<User> username) throws NoContentException{
-        return service.findTaskByAssignedToAndDeletedFalse(username);
+    public ResponseEntity<List<Task>> findByAssignedTo(@RequestParam List<Long> userId) throws NoContentException{
+        List<User> users=userService.findAllById(userId);
+        if (users.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        List<Task> tasks=service.findTaskByAssignedToAndDeletedFalse(users);
+        if (tasks.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(tasks);
     }
 
+    @GetMapping("/findByCreateDate")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{createDate}",method = RequestMethod.GET)
-    public List<Task> findByCreateDate(@PathVariable LocalDateTime createDate) throws NoContentException{
-        return service.findTaskByCreateDateAndDeletedFalse(createDate);
+    public List<Task> findByCreateDate(@RequestParam String faCreateDate) throws NoContentException{
+        LocalDateTime gregorianCreateDate=PersianDate.parse(faCreateDate).toGregorian().atStartOfDay();
+        return service.findTaskByCreateDateAndDeletedFalse(gregorianCreateDate);
     }
 
+    @GetMapping("/findByDueDate")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{dueDate}",method = RequestMethod.GET)
-    public List<Task> findByDueDate(@PathVariable LocalDateTime dueDate) throws NoContentException{
-        return service.findTaskByDueDateAndDeletedFalse(dueDate);
+    public List<Task> findByDueDate(@RequestParam String faDueDate) throws NoContentException{
+        LocalDateTime gregorianDueDate=PersianDate.parse(faDueDate).toGregorian().atStartOfDay();
+        return service.findTaskByDueDateAndDeletedFalse(gregorianDueDate);
     }
 
+    @GetMapping("/findByPriority")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{priority}",method = RequestMethod.GET)
-    public List<Task> findByPriority(@PathVariable String priority) throws NoContentException{
+    public List<Task> findByPriority(@RequestParam String priority) throws NoContentException{
         return service.findTaskByPriorityAndDeletedFalse(priority);
     }
 
+    @GetMapping("/findByStatus")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @RequestMapping(value = "/{status}",method = RequestMethod.GET)
-    public List<Task> findByStatus(@PathVariable String status) throws NoContentException{
+    public List<Task> findByStatus(@RequestParam String status) throws NoContentException{
         return service.findTaskByStatusAndDeletedFalse(status);
     }
 }

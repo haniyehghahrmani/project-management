@@ -1,5 +1,6 @@
 package com.example.projectManagement.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -41,5 +42,6 @@ public class Phase extends Base {
     private Project project;
 
     @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonBackReference
     public List<Task> taskList;
 }

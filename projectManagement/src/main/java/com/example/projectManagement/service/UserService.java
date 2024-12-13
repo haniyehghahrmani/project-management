@@ -20,6 +20,8 @@ public interface UserService {
 
     List<User> findAll();
 
+    List<User> findAllById(List<Long> userId);
+
     Optional<User> findById(Long id) throws NoContentException;
 
     Long getUsersCount();

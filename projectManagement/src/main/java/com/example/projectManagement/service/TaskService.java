@@ -30,7 +30,7 @@ public interface TaskService {
 
     Optional<Task> findTaskByIdAndDeletedFalse(Long id) throws NoContentException;
 
-    List<Task> findTaskByAssignedToAndDeletedFalse(List<User> username) throws NoContentException;
+    List<Task> findTaskByAssignedToAndDeletedFalse(List<User> users) throws NoContentException;
 
     List<Task> findTaskByCreateDateAndDeletedFalse(LocalDateTime createDate) throws NoContentException;
 

@@ -102,8 +102,8 @@ public class TaskServiceImp implements TaskService {
     }
 
     @Override
-    public List<Task> findTaskByAssignedToAndDeletedFalse(List<User> username) throws NoContentException {
-        return repository.findTaskByAssignedToAndDeletedFalse(username);
+    public List<Task> findTaskByAssignedToAndDeletedFalse(List<User> users) throws NoContentException {
+        return repository.findTaskByAssignedToAndDeletedFalse(users);
     }
 
     @Override
