@@ -1,6 +1,5 @@
 package com.example.projectManagement.model.entity;
 
-import com.example.projectManagement.model.enums.FileFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -13,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter      
+@Getter
 @Setter
 @SuperBuilder
 
@@ -32,10 +31,10 @@ public class Attachment {
     private String fileName;
 
     @Column(name = "attachment_file_format")
-    @Enumerated(EnumType.ORDINAL)
-    private FileFormat fileFormat;
+    private String fileType;
 
     @Column(name = "attachment_content")
+    @Lob
     private byte[] content;
 
     @Column(name = "attachment_file_path")

@@ -1,14 +1,20 @@
 package com.example.projectManagement.service;
 
 import com.example.projectManagement.model.entity.Attachment;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface AttachmentService {
 
-    Attachment save(Attachment attachment);
+    Attachment save(Attachment attachment, MultipartFile file) throws IOException;
 
-    Attachment edit(Attachment attachment);
+    Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException;
 
-    Attachment remove(String fileName);
+    void remove(Long id);
+
+    List<Attachment> findAll();
 
     Attachment findById(Long id);
 

@@ -3,44 +3,59 @@ package com.example.projectManagement.service.impl;
 import com.example.projectManagement.model.entity.Attachment;
 import com.example.projectManagement.repository.AttachmentRepository;
 import com.example.projectManagement.service.AttachmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class AttachmentServiceImpl implements AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
 
+    @Autowired
     public AttachmentServiceImpl(AttachmentRepository attachmentRepository) {
         this.attachmentRepository = attachmentRepository;
     }
 
     @Override
-    public Attachment save(Attachment attachment) {
+    public Attachment save(Attachment attachment, MultipartFile file) throws IOException {
+        attachment.setFileName(file.getOriginalFilename());
+        attachment.setFileType(file.getContentType());
+        attachment.setContent(file.getBytes());
+
         return attachmentRepository.save(attachment);
     }
 
     @Override
-    public Attachment edit(Attachment attachment) {
+    public Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException {
+        attachment.setFileName(file.getOriginalFilename());
+        attachment.setFileType(file.getContentType());
+        attachment.setContent(file.getBytes());
+
         return attachmentRepository.save(attachment);
     }
 
     @Override
-    public Attachment remove(String fileName) {
-         Optional<Attachment> attachment =  attachmentRepository.findByFileName(fileName);
-         if (attachment.isPresent())
-             attachmentRepository.delete(attachment.get());
-         return attachment.get();
+    public void remove(Long id) {
+        attachmentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Attachment> findAll() {
+        return attachmentRepository.findAll();
     }
 
     @Override
     public Attachment findById(Long id) {
-        return attachmentRepository.findById(id).get();
+        return attachmentRepository.findById(id).orElse(null);
     }
 
     @Override
     public Attachment findByFileName(String fileName) {
-        return attachmentRepository.findByFileName(fileName).get();
+        return attachmentRepository.findByFileName(fileName).orElse(null);
     }
+
 }
