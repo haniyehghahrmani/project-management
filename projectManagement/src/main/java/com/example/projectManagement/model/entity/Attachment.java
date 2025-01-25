@@ -30,18 +30,12 @@ public class Attachment {
     @NotBlank(message = "Should Not Be Null")
     private String fileName;
 
-    @Column(name = "attachment_file_format")
+    @Column(name = "attachment_file_Type")
     private String fileType;
 
     @Column(name = "attachment_content")
     @Lob
     private byte[] content;
-
-    @Column(name = "attachment_file_path")
-    private String filePath;
-
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    private Task task;
 
     @Column(name = "attachment_file_caption", columnDefinition = "NVARCHAR2(50)")
     @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Caption")

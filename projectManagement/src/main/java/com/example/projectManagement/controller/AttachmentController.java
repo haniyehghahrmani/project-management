@@ -2,18 +2,19 @@ package com.example.projectManagement.controller;
 
 import com.example.projectManagement.model.entity.Attachment;
 import com.example.projectManagement.service.impl.AttachmentServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
-@Controller
-@CrossOrigin
+@RestController
+@RequestMapping("/attachment")
 public class AttachmentController {
 
     private final AttachmentServiceImpl attachmentService;
@@ -37,15 +38,31 @@ public class AttachmentController {
         }
     }
 
-    @PostMapping("/attachment")
-    public ResponseEntity<?> save(@RequestPart Attachment attachment, @RequestPart MultipartFile file) {
+//    @PostMapping("/attachment")
+//    public ResponseEntity<?> save(@RequestPart Attachment attachment, @RequestPart MultipartFile file) {
+//        try {
+//            Attachment attachment1 = attachmentService.save(attachment, file);
+//            return new ResponseEntity<>(attachment1, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> save(@RequestPart("attachment") String attachmentJson, @RequestPart("file") MultipartFile file) {
         try {
-            Attachment attachment1 = attachmentService.save(attachment, file);
-            return new ResponseEntity<>(attachment1, HttpStatus.CREATED);
+            // تبدیل JSON به شیء `Attachment`
+            ObjectMapper objectMapper = new ObjectMapper();
+            Attachment attachment = objectMapper.readValue(attachmentJson, Attachment.class);
+
+            // ذخیره فایل و اطلاعات دیگر
+            Attachment savedAttachment = attachmentService.save(attachment, file);
+            return new ResponseEntity<>(savedAttachment, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @PutMapping("/attachment/{id}")
     public ResponseEntity<String> edit(@PathVariable Long id, @RequestPart Attachment attachment, @RequestPart MultipartFile file) {
