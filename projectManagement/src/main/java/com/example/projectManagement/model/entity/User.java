@@ -1,6 +1,7 @@
 package com.example.projectManagement.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,41 +17,39 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "UserEntity")
-@Table(name = "UserTbl")
+@Entity
+@Table(name = "users")
 public class User extends Base {
 
     @Id
-    @SequenceGenerator(name = "userSeq", sequenceName = "user_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "user_userName", columnDefinition = "NVARCHAR2(50)", unique = true)
-    @Pattern(regexp = "^[a-zA-Z1-9\\s]{3,30}$", message = "Invalid userName")
-    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "username", length = 30, unique = true, nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]{3,30}$", message = "نام کاربری معتبر نیست")
+    @Size(min = 3, max = 30, message = "نام کاربری باید بین ۳ تا ۳۰ کاراکتر باشد")
+    @NotBlank(message = "نام کاربری نباید خالی باشد")
     private String username;
 
-    @Column(name = "user_password", columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Z1-9\\s]{8,30}$", message = "Invalid password")
-    @Size(min = 8, max = 10, message = "password must be between 8 and 10 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "password", length = 60, nullable = false)
+    @JsonIgnore
+    @Size(min = 8, max = 30, message = "رمز عبور باید بین ۸ تا ۳۰ کاراکتر باشد")
+    @NotBlank(message = "رمز عبور نباید خالی باشد")
     private String password;
 
-    @Column(name = "user_status")
+    @Column(name = "status", nullable = false)
     private boolean status = true;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id", nullable = false)
     private Person person;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "user_role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @ManyToMany(mappedBy = "teamMembers", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonBackReference
     private List<Team> teamList;
-
 }

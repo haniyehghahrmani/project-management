@@ -18,44 +18,54 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "ReportEntity")
-@Table(name = "ReportTbl")
-public class Report extends Base{
+@Entity
+@Table(name = "reports")
+public class Report extends Base {
 
     @Id
-    @SequenceGenerator(name = "reportSeq", sequenceName = "report_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reportSeq")
-    @Column(name = "report_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "report_seq")
+    @SequenceGenerator(name = "report_seq", sequenceName = "report_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @OneToOne(cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    @Column(name = "report_generatedAt")
-    @FutureOrPresent(message = "Invalid Generated Date")
-    @NotNull(message = "Should Not Be Null")
+    @Column(name = "generated_at", nullable = false)
+    @FutureOrPresent(message = "تاریخ تولید باید امروز یا آینده باشد")
+    @NotNull(message = "تاریخ تولید نباید خالی باشد")
     private LocalDate generatedAt;
 
     @Transient
     private String faGeneratedAt;
 
-    @Column(name = "report_content",  columnDefinition = "NVARCHAR2(200)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "Invalid Content")
-    @Size(min = 3, max = 200, message = "Content must be between 3 and 200 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "content", length = 200, nullable = false)
+    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "متن گزارش معتبر نیست")
+    @Size(min = 3, max = 200, message = "متن گزارش باید بین ۳ تا ۲۰۰ کاراکتر باشد")
+    @NotBlank(message = "متن گزارش نباید خالی باشد")
     private String content;
 
-    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Task> taskList;
 
     public String getFaGeneratedAt() {
-        return String.valueOf(PersianDate.fromGregorian(generatedAt));
+        try {
+            return generatedAt != null ? PersianDate.fromGregorian(generatedAt).toString() : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void setFaGeneratedAt(String faGeneratedAt) {
-        this.generatedAt = PersianDate.parse(faGeneratedAt).toGregorian();
+        try {
+            if (faGeneratedAt != null && !faGeneratedAt.isEmpty()) {
+                this.generatedAt = PersianDate.parse(faGeneratedAt).toGregorian();
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

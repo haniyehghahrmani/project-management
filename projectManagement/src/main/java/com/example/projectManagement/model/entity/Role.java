@@ -12,36 +12,36 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 
-@Entity(name = "roleEntity")
-@Table(name = "role_tbl")
+@Entity
+@Table(name = "roles")
 public class Role extends Base {
 
     @Id
-    @SequenceGenerator(name = "roleSeq", sequenceName = "role_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
-    @Column(name = "role_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
+    @SequenceGenerator(name = "role_seq", sequenceName = "role_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "role_roleName", columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid roleName")
-    @Size(min = 3, max = 50, message = "roleName must be between 3 and 50 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "role_name", length = 50, nullable = false)
+    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "نام نقش معتبر نیست")
+    @Size(min = 3, max = 50, message = "نام نقش باید بین ۳ تا ۵۰ کاراکتر باشد")
+    @NotBlank(message = "نام نقش نباید خالی باشد")
     private String roleName;
-
-//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "role")
-//    private List<User> user;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "Role_Permission",
+            name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<Permission> permissions;
+
+    // اگر بخوای ارتباط با User رو فعال کنی:
+    // @OneToMany(mappedBy = "role", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    // private List<User> users;
 }

@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,41 +17,51 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "CommentEntity")
-@Table(name = "CommentTbl")
-public class Comment extends Base{
+@Entity
+@Table(name = "comments")
+public class Comment extends Base {
 
     @Id
-    @SequenceGenerator(name = "commentSeq", sequenceName = "comment_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commentSeq")
-    @Column(name = "comment_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
+    @SequenceGenerator(name = "comment_seq", sequenceName = "comment_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "comment_content",  columnDefinition = "NVARCHAR2(200)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "Invalid Content")
-    @Size(min = 3, max = 200, message = "Content must be between 3 and 200 characters")
-    @NotBlank(message = "Content Should Not Be Null")
+    @Column(name = "content", length = 200, nullable = false)
+    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "متن کامنت معتبر نیست")
+    @Size(min = 3, max = 200, message = "متن کامنت باید بین ۳ تا ۲۰۰ کاراکتر باشد")
+    @NotBlank(message = "متن کامنت نباید خالی باشد")
     private String content;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private List<User> author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
-    @Column(name = "comment_postedDate")
-    @Past(message = "Invalid Posted Date")
-    @NotNull(message = "Posted Date Should Not Be Null")
+    @Column(name = "posted_date", nullable = false)
+    @Past(message = "تاریخ ارسال باید در گذشته باشد")
+    @NotNull(message = "تاریخ ارسال نباید خالی باشد")
     private LocalDate postedDate;
 
     @Transient
     private String faPostedDate;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private List<Task> relatedTask;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private Task relatedTask;
 
     public String getFaPostedDate() {
-        return String.valueOf(PersianDate.fromGregorian(postedDate));
+        try {
+            return postedDate != null ? PersianDate.fromGregorian(postedDate).toString() : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void setFaPostedDate(String faPostedDate) {
-        this.postedDate = PersianDate.parse(faPostedDate).toGregorian();
+        try {
+            if (faPostedDate != null && !faPostedDate.isEmpty()) {
+                this.postedDate = PersianDate.parse(faPostedDate).toGregorian();
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

@@ -20,86 +20,88 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "ProjectEntity")
-@Table(name = "ProjectTbl")
-public class Project extends Base{
+@Entity
+@Table(name = "projects")
+public class Project extends Base {
 
     @Id
-    @SequenceGenerator(name = "projectSeq", sequenceName = "project_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectSeq")
-    @Column(name = "project_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
+    @SequenceGenerator(name = "project_seq", sequenceName = "project_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "project_name",  columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Name")
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "name", length = 50, nullable = false)
+    @Pattern(regexp = "^[آ-یa-zA-Z\\s]{3,50}$", message = "نام پروژه معتبر نیست")
+    @Size(min = 3, max = 50, message = "نام پروژه باید بین ۳ تا ۵۰ کاراکتر باشد")
+    @NotBlank(message = "نام پروژه نباید خالی باشد")
     private String name;
 
-    @Column(name = "project_description",  columnDefinition = "NVARCHAR2(200)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "Invalid Description")
-    @Size(min = 3, max = 200, message = "Description must be between 3 and 200 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "description", length = 200, nullable = false)
+    @Pattern(regexp = "^[آ-یa-zA-Z\\s]{3,200}$", message = "توضیحات معتبر نیست")
+    @Size(min = 3, max = 200, message = "توضیحات باید بین ۳ تا ۲۰۰ کاراکتر باشد")
+    @NotBlank(message = "توضیحات نباید خالی باشد")
     private String description;
 
-    @Column(name = "project_startDate")
-    @PastOrPresent(message = "Invalid Start Date")
-    @NotNull(message = "Should Not Be Null")
+    @Column(name = "start_date", nullable = false)
+    @PastOrPresent(message = "تاریخ شروع باید در گذشته یا حال باشد")
+    @NotNull(message = "تاریخ شروع نباید خالی باشد")
     private LocalDate startDate;
 
     @Transient
     private String faStartDate;
 
-    @Column(name = "project_endDate")
-    @FutureOrPresent(message = "Invalid End Date")
-    @NotNull(message = "Should Not Be Null")
+    @Column(name = "end_date", nullable = false)
+    @FutureOrPresent(message = "تاریخ پایان باید در آینده یا حال باشد")
+    @NotNull(message = "تاریخ پایان نباید خالی باشد")
     private LocalDate endDate;
 
     @Transient
     private String faEndDate;
 
-    @Column(name = "project_status")
-    @Enumerated(EnumType.ORDINAL)
-    @NotNull(message = "Status Should Not Be Null")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
 
-//    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST}, fetch = FetchType.EAGER)
-//    public List<User> teamMembers;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Team> teamList;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Task> taskList;
+
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JsonBackReference
-    public List<Phase> phaseList;
+    private List<Phase> phaseList;
 
     public String getFaStartDate() {
-        if (startDate!= null){
-            return PersianDate.fromGregorian(startDate).toString();
+        try {
+            return startDate != null ? PersianDate.fromGregorian(startDate).toString() : null;
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
     public void setFaStartDate(String faStartDate) {
-        if (faStartDate!=null && !faStartDate.isEmpty()){
-            this.startDate=PersianDate.parse(faStartDate).toGregorian();
+        try {
+            if (faStartDate != null && !faStartDate.isEmpty()) {
+                this.startDate = PersianDate.parse(faStartDate).toGregorian();
+            }
+        } catch (Exception ignored) {
         }
     }
 
     public String getFaEndDate() {
-        if (endDate!= null){
-            return PersianDate.fromGregorian(endDate).toString();
+        try {
+            return endDate != null ? PersianDate.fromGregorian(endDate).toString() : null;
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
     public void setFaEndDate(String faEndDate) {
-        if (faEndDate!=null && !faEndDate.isEmpty()){
-            this.endDate=PersianDate.parse(faEndDate).toGregorian();
+        try {
+            if (faEndDate != null && !faEndDate.isEmpty()) {
+                this.endDate = PersianDate.parse(faEndDate).toGregorian();
+            }
+        } catch (Exception ignored) {
         }
     }
-
-//    public void setUser(List<User> teamMembers) {
-//    }
-
-//    public List<Task> getTask() {
-//        return null;
-//    }
 }

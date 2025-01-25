@@ -19,26 +19,27 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "TeamEntity")
-@Table(name = "TeamTbl")
+@Entity
+@Table(name = "teams")
 public class Team extends Base {
 
     @Id
-    @SequenceGenerator(name = "teamSeq", sequenceName = "team_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teamSeq")
-    @Column(name = "team_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
+    @SequenceGenerator(name = "team_seq", sequenceName = "team_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "team_teamName", columnDefinition = "NVARCHAR2(50)", unique = true)
-    @Pattern(regexp = "^[a-zA-Z1-9\\s]{3,30}$", message = "Invalid teamName")
-    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "name", length = 50, unique = true, nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]{3,30}$", message = "نام تیم باید فقط شامل حروف و اعداد باشد")
+    @Size(min = 3, max = 30, message = "نام تیم باید بین ۳ تا ۳۰ کاراکتر باشد")
+    @NotBlank(message = "نام تیم نباید خالی باشد")
     private String teamName;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "team_user",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     @JsonManagedReference
     private List<User> teamMembers;
-
-//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-//    private List<Project> projectList;
 }

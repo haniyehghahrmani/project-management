@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,56 +22,59 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "TaskEntity")
-@Table(name = "TaskTbl")
-public class Task extends Base{
+@Entity
+@Table(name = "tasks")
+public class Task extends Base {
 
     @Id
-    @SequenceGenerator(name = "taskSeq", sequenceName = "task_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "taskSeq")
-    @Column(name = "task_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_seq")
+    @SequenceGenerator(name = "task_seq", sequenceName = "task_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "task_title",  columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Title")
-    @Size(min = 3, max = 50, message = "Title must be between 3 and 50 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "title", length = 50, nullable = false)
+    @Pattern(regexp = "^[آ-یa-zA-Z0-9\\s.,،]{3,50}$", message = "عنوان معتبر نیست")
+    @Size(min = 3, max = 50, message = "عنوان باید بین ۳ تا ۵۰ کاراکتر باشد")
+    @NotBlank(message = "عنوان نباید خالی باشد")
     private String title;
 
-    @Column(name = "task_description",  columnDefinition = "NVARCHAR2(200)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,200}$", message = "Invalid Description")
-    @Size(min = 3, max = 200, message = "Description must be between 3 and 200 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "description", length = 200, nullable = false)
+    @Pattern(regexp = "^[آ-یa-zA-Z0-9\\s.,،]{3,200}$", message = "توضیحات معتبر نیست")
+    @Size(min = 3, max = 200, message = "توضیحات باید بین ۳ تا ۲۰۰ کاراکتر باشد")
+    @NotBlank(message = "توضیحات نباید خالی باشد")
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "task_user",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> assignedTo;
 
-    @Column(name = "task_createDate")
+    @Column(name = "create_date")
     @PastOrPresent
     private LocalDateTime createDate;
 
     @Transient
     private String faCreateDate;
 
-    @Column(name = "task_dueDate")
+    @Column(name = "due_date")
     @Future
     private LocalDateTime dueDate;
 
     @Transient
     private String faDueDate;
 
-    @Column(name = "task_priority")
-    @Enumerated(EnumType.ORDINAL)
-    @NotNull(message = "Should Not Be Null")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", nullable = false)
     private Priority priority;
 
-    @Column(name = "task_status")
-    @Enumerated(EnumType.ORDINAL)
-    @NotNull(message = "Should Not Be Null")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private Status status;
 
-    @OneToMany(cascade = {CascadeType.MERGE ,CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "parent_task_id")
     private List<Task> subTasks;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -80,29 +82,38 @@ public class Task extends Base{
     @JsonManagedReference
     private Phase phase;
 
-    //TODO: Check This Method.
-    public void addSubTask(Task task){
-        if(subTasks == null){
-            subTasks = new ArrayList<>();
-
-        }
+    public void addSubTask(Task task) {
+        if (subTasks == null) subTasks = new ArrayList<>();
         subTasks.add(task);
-
     }
 
     public String getFaCreateDate() {
-        return String.valueOf(PersianDate.fromGregorian(LocalDate.from(createDate)));
+        try {
+            return createDate != null ? PersianDate.fromGregorian(createDate.toLocalDate()).toString() : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void setFaCreateDate(String faCreateDate) {
-        this.createDate = PersianDate.parse(faCreateDate).toGregorian().atStartOfDay();
+        try {
+            this.createDate = PersianDate.parse(faCreateDate).toGregorian().atStartOfDay();
+        } catch (Exception ignored) {
+        }
     }
 
     public String getFaDueDate() {
-        return String.valueOf(PersianDate.fromGregorian(LocalDate.from(dueDate)));
+        try {
+            return dueDate != null ? PersianDate.fromGregorian(dueDate.toLocalDate()).toString() : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void setFaDueDate(String faDueDate) {
-        this.dueDate = PersianDate.parse(faDueDate).toGregorian().atStartOfDay();
+        try {
+            this.dueDate = PersianDate.parse(faDueDate).toGregorian().atStartOfDay();
+        } catch (Exception ignored) {
+        }
     }
 }

@@ -20,28 +20,27 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "PhaseEntity")
-@Table(name = "PhaseTbl")
+@Entity
+@Table(name = "phases")
 public class Phase extends Base {
 
     @Id
-    @SequenceGenerator(name = "phaseSeq", sequenceName = "phase_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phaseSeq")
-    @Column(name = "phase_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phase_seq")
+    @SequenceGenerator(name = "phase_seq", sequenceName = "phase_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "phase_phaseName", columnDefinition = "NVARCHAR2(50)", unique = true)
-    @Pattern(regexp = "^[a-zA-Z1-9\\s]{3,30}$", message = "Invalid phaseName")
-    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "name", length = 50, unique = true, nullable = false)
+    @Pattern(regexp = "^[آ-یa-zA-Z0-9\\s]{3,30}$", message = "نام فاز معتبر نیست")
+    @Size(min = 3, max = 30, message = "نام فاز باید بین ۳ تا ۳۰ کاراکتر باشد")
+    @NotBlank(message = "نام فاز نباید خالی باشد")
     private String phaseName;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     @JsonManagedReference
     private Project project;
 
     @OneToMany(mappedBy = "phase", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonBackReference
-    public List<Task> taskList;
+    private List<Task> taskList;
 }

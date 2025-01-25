@@ -18,55 +18,47 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity(name = "PersonEntity")
-@Table(name = "PersonTbl")
+@Entity
+@Table(name = "person")
 public class Person extends Base {
 
     @Id
-    @SequenceGenerator(name = "personSeq", sequenceName = "person_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personSeq")
-    @Column(name = "person_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
+    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "person_name", columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Name")
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "name", length = 50, nullable = false)
+    @Pattern(regexp = "^[آ-یءئa-zA-Z\\s]{3,50}$", message = "نام معتبر نیست")
+    @Size(min = 3, max = 50, message = "نام باید بین ۳ تا ۵۰ کاراکتر باشد")
+    @NotBlank(message = "نام نباید خالی باشد")
     private String name;
 
-    @Column(name = "person_lastname", columnDefinition = "NVARCHAR2(50)")
-    @Pattern(regexp = "^[a-zA-Zآ-ی\\s]{3,50}$", message = "Invalid Family")
-    @Size(min = 3, max = 50, message = "Last Name must be between 3 and 50 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "lastname", length = 50, nullable = false)
+    @Pattern(regexp = "^[آ-یءئa-zA-Z\\s]{3,50}$", message = "نام خانوادگی معتبر نیست")
+    @Size(min = 3, max = 50, message = "نام خانوادگی باید بین ۳ تا ۵۰ کاراکتر باشد")
+    @NotBlank(message = "نام خانوادگی نباید خالی باشد")
     private String lastname;
 
-    @Column(name = "person_national_id", length = 10, unique = true)
-    @Pattern(regexp = "^[0-9]{1,10}$", message = "Invalid National ID")
-    @Size(min = 1, max = 10, message = " National ID must be between 1 and 10 characters")
-    @NotBlank(message = "Should Not Be Null")
+    @Column(name = "national_id", length = 10, unique = true, nullable = false)
+    @Pattern(regexp = "^[0-9]{10}$", message = "کد ملی باید ۱۰ رقم باشد")
+    @NotBlank(message = "کد ملی نباید خالی باشد")
     private String nationalId;
 
-    @Column(name = "person_birthdate")
-    @Past(message = "Invalid Birth Date")
-    @NotNull(message = "Should Not Be Null")
+    @Column(name = "birthdate", nullable = false)
+    @Past(message = "تاریخ تولد باید در گذشته باشد")
+    @NotNull(message = "تاریخ تولد نباید خالی باشد")
     private LocalDate birthdate;
 
     @Transient
     private String faBirthdate;
 
-    @Column(name = "person_gender")
-    @Enumerated(EnumType.ORDINAL)
-    @NotNull(message = "Should Not Be Null")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
+    @NotNull(message = "جنسیت نباید خالی باشد")
     private Gender gender;
 
-//    @OneToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, fetch = FetchType.LAZY,mappedBy = "person")
-//    private List<User> user;
-
     public String getFaBirthdate() {
-        if (birthdate != null) {
-            return PersianDate.fromGregorian(birthdate).toString();
-        }
-        return null;
+        return birthdate != null ? PersianDate.fromGregorian(birthdate).toString() : null;
     }
 
     public void setFaBirthdate(String faBirthdate) {
@@ -74,5 +66,4 @@ public class Person extends Base {
             this.birthdate = PersianDate.parse(faBirthdate).toGregorian();
         }
     }
-
 }
