@@ -1,5 +1,6 @@
 package com.example.projectManagement.service.impl;
 
+import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Attachment;
 import com.example.projectManagement.repository.AttachmentRepository;
 import com.example.projectManagement.service.AttachmentService;
@@ -30,12 +31,17 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException {
-        attachment.setFileName(file.getOriginalFilename());
-        attachment.setFileType(file.getContentType());
-        attachment.setContent(file.getBytes());
+    public Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException, NoContentException {
+        Attachment existingAttachment=attachmentRepository.findById(id)
+                .orElseThrow(
+                        () -> new NoContentException("No Active Attachment Was Found with id " + id + " To Update!")
+                );
+        existingAttachment.setFileName(file.getOriginalFilename());
+        existingAttachment.setFileType(file.getContentType());
+        existingAttachment.setContent(file.getBytes());
+        existingAttachment.setCaption(attachment.getCaption());
 
-        return attachmentRepository.save(attachment);
+        return attachmentRepository.saveAndFlush(existingAttachment);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.projectManagement.controller;
 
+import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Attachment;
 import com.example.projectManagement.service.impl.AttachmentServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,17 +20,18 @@ public class AttachmentController {
 
     private final AttachmentServiceImpl attachmentService;
 
+    @Autowired
     public AttachmentController(AttachmentServiceImpl attachmentService) {
         this.attachmentService = attachmentService;
     }
 
-    @GetMapping("/attachments")
+    @GetMapping("/all")
     public ResponseEntity<List<Attachment>> findAll() {
         return new ResponseEntity<>(attachmentService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/attachment/{id}")
-    public ResponseEntity<Attachment> findByAll(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Attachment> findById(@PathVariable Long id) {
         Attachment attachment = attachmentService.findById(id);
         if (attachment != null) {
             return new ResponseEntity<>(attachment, HttpStatus.OK);
@@ -63,14 +65,15 @@ public class AttachmentController {
         }
     }
 
-
-    @PutMapping("/attachment/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> edit(@PathVariable Long id, @RequestPart Attachment attachment, @RequestPart MultipartFile file) {
         Attachment attachment1 = null;
         try {
             attachment1 = attachmentService.edit(id, attachment, file);
         } catch (IOException e) {
             return new ResponseEntity<>("Failed to update", HttpStatus.BAD_REQUEST);
+        } catch (NoContentException e) {
+            throw new RuntimeException(e);
         }
         if (attachment1 != null) {
             return new ResponseEntity<>("Updated", HttpStatus.OK);
@@ -79,7 +82,7 @@ public class AttachmentController {
         }
     }
 
-    @DeleteMapping("/attachment/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> remove(@PathVariable Long id) {
         Attachment attachment = attachmentService.findById(id);
         if (attachment != null) {
@@ -90,7 +93,8 @@ public class AttachmentController {
         }
     }
 
-    @GetMapping("/attachment/{attachmentId}/file")
+    //download
+    @GetMapping("/{attachmentId}/file")
     public ResponseEntity<byte[]> getFileByAttachmentId(@PathVariable Long attachmentId) {
         Attachment attachment = attachmentService.findById(attachmentId);
         byte[] file = attachment.getContent();

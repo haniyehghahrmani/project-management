@@ -1,5 +1,6 @@
 package com.example.projectManagement.service;
 
+import com.example.projectManagement.exception.NoContentException;
 import com.example.projectManagement.model.entity.Attachment;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ public interface AttachmentService {
 
     Attachment save(Attachment attachment, MultipartFile file) throws IOException;
 
-    Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException;
+    Attachment edit(Long id, Attachment attachment, MultipartFile file) throws IOException, NoContentException;
 
     void remove(Long id);
 
