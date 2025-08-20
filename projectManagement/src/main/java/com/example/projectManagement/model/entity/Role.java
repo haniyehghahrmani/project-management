@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
+@Entity(name = "RoleEntity")
 @Table(name = "roles")
 public class Role extends Base {
 

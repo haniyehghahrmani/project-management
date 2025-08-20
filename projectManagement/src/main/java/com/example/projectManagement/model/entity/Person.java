@@ -18,8 +18,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
-@Table(name = "person")
+@Entity(name = "PersonEntity")
+@Table(name = "persons")
 public class Person extends Base {
 
     @Id

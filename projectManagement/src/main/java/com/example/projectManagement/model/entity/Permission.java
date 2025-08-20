@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
@@ -15,9 +14,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
+@Entity(name = "PermissionEntity")
 @Table(name = "permissions")
-@EntityListeners(AuditingEntityListener.class)
 public class Permission extends Base {
 
     @Id

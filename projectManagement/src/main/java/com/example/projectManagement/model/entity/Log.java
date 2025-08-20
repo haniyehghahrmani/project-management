@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 
 @Entity(name = "LogEntity")
-@Table(name = "LogTbl")
+@Table(name = "logs")
 public class Log extends Base {
 
     @Id

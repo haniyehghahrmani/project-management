@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Modifying
-    @Query("update roleEntity r set r.deleted=true where r.id=:id")
+    @Query("update RoleEntity r set r.deleted=true where r.id=:id")
     void logicalRemove(Long id);
 
     List<Role> findRoleByDeletedFalse();

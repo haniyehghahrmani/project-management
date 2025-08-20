@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
+@Entity(name = "PhaseEntity")
 @Table(name = "phases")
 public class Phase extends Base {
 

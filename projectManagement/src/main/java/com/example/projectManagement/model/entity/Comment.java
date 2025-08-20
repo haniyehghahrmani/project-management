@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
+@Entity(name = "CommentEntity")
 @Table(name = "comments")
 public class Comment extends Base {
 

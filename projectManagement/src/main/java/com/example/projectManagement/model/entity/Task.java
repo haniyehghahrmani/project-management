@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 
-@Entity
+@Entity(name = "TaskEntity")
 @Table(name = "tasks")
 public class Task extends Base {
 

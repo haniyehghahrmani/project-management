@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
     @Modifying
-    @Query("update TaskEntity oo set oo.deleted=true where oo.id=:id")
+    @Query("update CommentEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
 
     List<Comment> findCommentByDeletedFalse();
